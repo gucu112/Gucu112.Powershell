@@ -1,0 +1,36 @@
+Describe "{{FunctionName}}" {
+    BeforeAll {
+        $modulePath = Join-Path $PSScriptRoot '..\src\{{FunctionName}}.psm1'
+        Import-Module $modulePath
+    }
+
+    AfterAll {
+        Remove-Module '{{FunctionName}}'
+    }
+
+    Context "unit tests" {
+        BeforeEach {
+            Mock {{FunctionName}} {}
+        }
+
+        It "works" {
+            $scriptBlock = { {{FunctionName}} }
+
+            $scriptBlock | Should -Not -Throw
+        }
+    }
+
+    Context "e2e tests" {
+        BeforeAll {
+            # setup
+        }
+
+        AfterAll {
+            # teardown
+        }
+
+        It "works" {
+            # test
+        }
+    }
+}

@@ -1,0 +1,26 @@
+function {{FunctionName}} {
+    #region Documentation
+    <#
+    {{Documentation}}
+    #>
+    #endregion
+
+    #region Parameters
+    [CmdletBinding({{CmdletBindings}})]
+    param({{Parameters}})
+    #endregion
+
+    #region Begin
+    begin {{BeginBlock}}
+    #endregion
+
+    #region Process
+    process {{ProcessBlock}}
+    #endregion
+
+    #region End
+    end {{EndBlock}}
+    #endregion
+}
+
+{{AliasDefinition}}
