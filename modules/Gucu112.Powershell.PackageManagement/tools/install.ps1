@@ -12,7 +12,7 @@ Get-PackageProvider -ListAvailable
 Get-PSRepository -Name 'PSGallery'
 
 ###
-# PSGallery (PowerShellGet)
+# PowerShellGet
 ###
 
 # Add-PSPackageProvider

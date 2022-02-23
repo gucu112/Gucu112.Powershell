@@ -8,7 +8,6 @@ function Add-PackageSource {
     #region Parameters
     [CmdletBinding()]
     param(
-        # TODO: Change to [string[]] and check if still working
         [Parameter(Mandatory, ValueFromPipeline)]
         [string]$Name,
 
@@ -33,7 +32,7 @@ function Add-PackageSource {
     begin {
         # TODO: Move to module configuration
         $providerVersionMap = @{
-            PowerShellGet = '1.0.0.1'
+            PowerShellGet = '2.2.5'
             NuGet = '2.8.5.201'
             ChocolateyGet = '3.1.1'
         }
@@ -44,21 +43,37 @@ function Add-PackageSource {
 
         switch ($ProviderName) {
             'PowerShellGet' {
+                # TODO: Consider adding Get-PSRepository to condition
                 if ($Force.IsPresent) {
-                    Unregister-PSRepository -Name $Name
+                    # TODO: Check which statement can be used here
+                    # Unregister-PSRepository -Name $Name
+                    Get-PSRepository -Name $Name -ErrorAction Ignore | Unregister-PSRepository
                 }
 
                 $installationPolicy = @('Untrusted', 'Trusted')[$Trusted.IsPresent]
-                Register-PSRepository -Name $Name -SourceLocation $Location -InstallationPolicy $installationPolicy | Out-Null
-            }
-            default {
-                if ($Force.IsPresent) {
-                    # TODO: Check if it is working
-                    Unregister-PackageSource -Name $Name
-                    # Get-PackageSource -Name $Name -ErrorAction Ignore | Unregister-PackageSource
+
+                $repositoryParams = @{
+                    Name = $Name
+                    SourceLocation = $Location
+                    InstallationPolicy = $installationPolicy
                 }
 
-                Register-PackageSource -Name $Name -ProviderName $ProviderName -Location $Location -Trusted:$Trusted
+                # TODO: Check if necessary
+                # if ($Location -like '*powershellgallery.com/api/v2*') {
+                #     $repositoryParams = @{
+                #         Default = $true
+                #         InstallationPolicy = $installationPolicy
+                #     }
+                # }
+
+                Register-PSRepository @repositoryParams | Out-Null
+            }
+            default {
+                if ($Force.IsPresent -and (Get-PackageSource -Name $Name -ErrorAction Ignore)) {
+                    Unregister-PackageSource -Name $Name -Force
+                }
+
+                Register-PackageSource -Name $Name -ProviderName $ProviderName -Location $Location -Trusted:$Trusted -Force:$Force
             }
         }
     }

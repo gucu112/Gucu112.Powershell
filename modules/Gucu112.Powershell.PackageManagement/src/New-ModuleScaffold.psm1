@@ -1,6 +1,4 @@
-﻿# TODO: Check ArrayList
-# using namespace System.Collections
-function New-ModuleScaffold {
+﻿function New-ModuleScaffold {
     #region Documentation
     <#
     No documentation yet.
@@ -63,7 +61,7 @@ function New-ModuleScaffold {
 
     #region Begin
     begin {
-        # TODO: Change string list to ErrorRecord list
+        # TODO: Change string to ErrorRecord for error collection list
         $errorCollection = New-Object System.Collections.Generic.List[string]
 
         $moduleCollection = $Path | ForEach-Object {
@@ -86,9 +84,9 @@ function New-ModuleScaffold {
             }
         }
 
-        # if ($Company -ne 'Unknown') { $Company } else { $Author }
+        #if ($Company -ne 'Unknown') { $Company } else { $Author }
         $copyrightOwner = @($Author, $Company)[$Company -ne 'Unknown']
-        # if ($null -ne $Copyright) { $Copyright } else { 'Default' }
+        #if ($null -ne $Copyright) { $Copyright } else { 'Default' }
         $copyrightText = @("(c) $(Get-Date -Format 'yyyy') $copyrightOwner. All rights reserved.", $Copyright)[$null -ne $Copyright]
     }
     #endregion
@@ -121,13 +119,13 @@ function New-ModuleScaffold {
             }
 
             # TODO: Remove after full implementation
-            $manifestParams | Format-Table | Out-Host
+            # $manifestParams | Format-Table | Out-Host
 
             if ($PSCmdlet.ShouldProcess($_.Path)) {
                 New-Item -Path $_.Path -ItemType Directory | Out-Null
                 New-Item -Path (Join-Path $_.Path 'src') -ItemType Directory | Out-Null
                 New-Item -Path (Join-Path $_.Path 'tests') -ItemType Directory | Out-Null
-                # TODO: Provide enum -RootModuleType to create additional root module file (different extensions of file)
+                # TODO: Provide enum -RootModuleType to create additional/replace current root module file (different extensions of file)
                 # See (-RootModule): https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.core/new-modulemanifest?view=powershell-5.1
                 New-Item -Path (Join-Path $absolutePath "$moduleName.psm1") -ItemType File | Out-Null
             }

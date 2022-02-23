@@ -35,7 +35,19 @@ Implementation
 
 ## Ideas
 
-* Check how common parameters works with CmdletBinding
+* Functions
+  - Package Management
+    - Install-Script
+    - New-ScriptFileInfo
+  - Utility
+    - Write-Message
+    - ConvertFrom-SecureStringUsingBSTR
+* Enhancements
+  - Change string to ErrorRecord for error collection list
+  - Try System.Collections.ArrayList as error collection list
+
+## Research
+
 * Check what will happen when we re-use function across module and import module with -Prefix parameter
   - https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.core/import-module?view=powershell-5.1
 * What else?

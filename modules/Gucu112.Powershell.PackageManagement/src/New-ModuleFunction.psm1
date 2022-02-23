@@ -29,7 +29,7 @@
 
     #region Begin
     begin {
-        # TODO: Change string list to ErrorRecord list
+        # TODO: Change string to ErrorRecord for error collection list
         $errorCollection = New-Object System.Collections.Generic.List[string]
 
         $moduleName = Split-Path $Path -Leaf
@@ -61,7 +61,7 @@
         if ($ErrorHandling.IsPresent) {
             $beginBlock = @'
         {
-            # TODO: Change string list to ErrorRecord list
+            # TODO: Change string to ErrorRecord for error collection list
             $errorCollection = New-Object System.Collections.Generic.List[string]
         }
 '@
