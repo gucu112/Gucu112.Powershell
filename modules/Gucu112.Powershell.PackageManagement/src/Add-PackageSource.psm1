@@ -37,17 +37,14 @@ function Add-PackageSource {
             ChocolateyGet = '3.1.1'
         }
 
-        if (-not (Get-PackageProvider -Name $ProviderName -ListAvailable -ErrorAction Ignore)) {
-            Import-PackageProvider -Name $ProviderName -MinimumVersion $providerVersionMap[$ProviderName] -ErrorAction Stop
+        if ($Force.IsPresent -or (-not (Get-PackageProvider -Name $ProviderName -ListAvailable -ErrorAction Ignore))) {
+            Import-PackageProvider -Name $ProviderName -MinimumVersion $providerVersionMap[$ProviderName] -ErrorAction Stop -Force:$Force | Out-Null
         }
 
         switch ($ProviderName) {
             'PowerShellGet' {
-                # TODO: Consider adding Get-PSRepository to condition
-                if ($Force.IsPresent) {
-                    # TODO: Check which statement can be used here
-                    # Unregister-PSRepository -Name $Name
-                    Get-PSRepository -Name $Name -ErrorAction Ignore | Unregister-PSRepository
+                if ($Force.IsPresent -and (Get-PSRepository -Name $Name -ErrorAction Ignore)) {
+                    Unregister-PSRepository -Name $Name
                 }
 
                 $installationPolicy = @('Untrusted', 'Trusted')[$Trusted.IsPresent]
@@ -58,13 +55,12 @@ function Add-PackageSource {
                     InstallationPolicy = $installationPolicy
                 }
 
-                # TODO: Check if necessary
-                # if ($Location -like '*powershellgallery.com/api/v2*') {
-                #     $repositoryParams = @{
-                #         Default = $true
-                #         InstallationPolicy = $installationPolicy
-                #     }
-                # }
+                if ($Location -like '*powershellgallery.com/api/v2*') {
+                    $repositoryParams = @{
+                        Default = $true
+                        InstallationPolicy = $installationPolicy
+                    }
+                }
 
                 Register-PSRepository @repositoryParams | Out-Null
             }

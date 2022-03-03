@@ -28,7 +28,7 @@
             # You can also try running the Windows PowerShell session with elevated rights (Run as Administrator).
 
             if ($ProviderName -eq 'PowerShellGet') {
-                Install-Module 'PowerShellGet' -Force:$Force
+                Install-Module 'PowerShellGet' -AllowClobber -Force:$Force
             }
 
             Install-PackageProvider -Name $ProviderName -Force:$Force
