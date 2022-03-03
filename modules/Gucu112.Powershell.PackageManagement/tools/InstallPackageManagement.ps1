@@ -2,8 +2,11 @@
 # Init
 ###
 
-# Import-Module Gucu112.Powershell.PackageManagement
-Import-Module (Join-Path $PSScriptRoot '..\Gucu112.Powershell.PackageManagement.psd1')
+try {
+    Import-Module Gucu112.Powershell.PackageManagement
+} catch {
+    Import-Module (Join-Path $PSScriptRoot '..\Gucu112.Powershell.PackageManagement.psd1')
+}
 
 # Get-AvailablePackageProvider
 Get-PackageProvider -ListAvailable
