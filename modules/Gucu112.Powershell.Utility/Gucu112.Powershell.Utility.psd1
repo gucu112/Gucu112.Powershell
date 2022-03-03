@@ -57,8 +57,7 @@ RequiredModules = @(
 
 # Assemblies that must be loaded prior to importing this module
 RequiredAssemblies = @(
-    # Get-CurrentWindowsIdentity
-    'System.Security.Principal.Windows.dll'
+    'System.Security.Principal.dll'
 )
 
 # Script files (.ps1) that are run in the caller's environment prior to importing this module.
@@ -72,20 +71,20 @@ RequiredAssemblies = @(
 
 # Modules to import as nested modules of the module specified in RootModule/ModuleToProcess
 NestedModules = @(
-    'src\Get-CurrentWindowsComputer.psm1'
-    'src\Get-CurrentWindowsIdentity.psm1'
+    'src\Get-WindowsIdentity.psm1'
+    'src\Test-WindowsIdentity.psm1'
 )
 
 # Functions to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no functions to export.
 FunctionsToExport = @(
-    # Gucu112.PowerShell.Utility
-    'Get-CurrentWindowsComputer'
-    'Get-CurrentWindowsIdentity'
     # BetterTls
     'Disable-Tls'
     'Enable-Tls'
     'Get-Tls'
     'Set-Tls'
+    # Gucu112.Powershell.Utility
+    'Get-WindowsIdentity'
+    'Test-WindowsIdentity'
 )
 
 # Cmdlets to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no cmdlets to export.

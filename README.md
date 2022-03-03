@@ -1,5 +1,7 @@
 # Gucu112.Powershell
 
+TODO: Add description (here and on github)
+
 ## Import module locally
 
 Start from root project directory and use this command:
@@ -17,8 +19,8 @@ Import-Module '.\modules\Gucu112.Powershell.PackageManagement\src\New-ModuleScaf
 Remember to remove module if you want to reload it:
 
 ```shell
-Remove-Module 'Gucu112.Powershell.Utility' # module name
-Remove-Module 'New-ModuleScaffold' # function name
+Remove-Module 'Gucu112.Powershell.Utility' # module name (psd1)
+Remove-Module 'New-ModuleScaffold' # function name (psm1)
 ```
 
 ## Create test module
@@ -26,7 +28,15 @@ Remove-Module 'New-ModuleScaffold' # function name
 Run following command from root project directory:
 
 ```shell
-New-ModuleScaffold '.\modules\Gucu112.Powershell.Test'
+New-ModuleScaffold -Path '.\modules\Gucu112.Powershell.Test'
+```
+
+## Create test functions in the module
+
+Run following command from root project directory:
+
+```shell
+New-ModuleFunction -Name @('New-Thing', 'Get-Thing') -Path '.\modules\Gucu112.Powershell.Test'
 ```
 
 ## Tests
@@ -37,18 +47,20 @@ Implementation
 
 * Functions
   - Package Management
-    - Install-Script
     - New-ScriptFileInfo
+    - Install-Script
   - Utility
-    - Write-Message
+    - Get-Path -Absolute
     - ConvertFrom-SecureStringUsingBSTR
+    - Write-Message
+    - Get-WindowsIdentity -LoggedIn, -Anonymous
 * Enhancements
   - Replace `$_` with `$PSItem` for better visibility
   - Change string to ErrorRecord for error collection list
   - Try System.Collections.ArrayList as error collection list
-* Documentation
-  - Get-CurrentWindowsIdentity
-  - Get-CurrentWindowsUser
+* Documentation & Unit Tests
+  - Get-WindowsIdentity
+  - Test-WindowsIdentity
 
 ## Research
 

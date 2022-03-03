@@ -1,9 +1,14 @@
-param()
+param(
+    [switch]$Force = $false,
+    [switch]$Confirm
+)
 
 try {
-    Import-Module Gucu112.Powershell.Utility
+    Write-Verbose "Importing 'Gucu112.Powershell.Utility' module."
+    Import-Module Gucu112.Powershell.Utility -Force:$Force
 } catch {
-    Import-Module (Join-Path $PSScriptRoot '..\Gucu112.Powershell.Utility.psd1')
+    Write-Verbose "Importing 'Gucu112.Powershell.Utility' module locally."
+    Import-Module (Join-Path $PSScriptRoot '..\Gucu112.Powershell.Utility.psd1') -Force:$Force
 }
 
-Set-Tls -Tls12
+Set-Tls -Tls12 -Confirm:$Confirm
