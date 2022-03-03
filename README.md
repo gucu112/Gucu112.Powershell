@@ -43,8 +43,12 @@ Implementation
     - Write-Message
     - ConvertFrom-SecureStringUsingBSTR
 * Enhancements
+  - Replace `$_` with `$PSItem` for better visibility
   - Change string to ErrorRecord for error collection list
   - Try System.Collections.ArrayList as error collection list
+* Documentation
+  - Get-CurrentWindowsIdentity
+  - Get-CurrentWindowsUser
 
 ## Research
 
