@@ -5,7 +5,11 @@ Describe "{{FunctionName}}" {
     }
 
     AfterAll {
-        Remove-Module '{{FunctionName}}'
+        Remove-Module '{{FunctionName}}' -Force
+    }
+
+    It "does have proper parameters" {
+        Get-Command {{FunctionName}} | Should -Not -HaveParameter Test -Type ([string])
     }
 
     Context "unit tests" {
@@ -17,19 +21,19 @@ Describe "{{FunctionName}}" {
             $scriptBlock = { {{FunctionName}} }
 
             $scriptBlock | Should -Not -Throw
+
+            $null = Invoke-Command $scriptBlock
+
+            Should -Invoke {{FunctionName}} -Times 1
         }
     }
 
     Context "e2e tests" {
-        BeforeAll {
-            # setup
-        }
-
-        AfterAll {
-            # teardown
-        }
-
         It "works" {
+            # test
+        }
+
+        It "does not work" {
             # test
         }
     }

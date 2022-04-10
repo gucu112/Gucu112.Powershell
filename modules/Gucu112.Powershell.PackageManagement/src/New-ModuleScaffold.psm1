@@ -1,4 +1,7 @@
-﻿function New-ModuleScaffold {
+﻿using namespace System.Collections.Generic
+using namespace System.IO
+using namespace System.Management.Automation
+function New-ModuleScaffold {
     #region Documentation
     <#
     No documentation yet.
@@ -6,21 +9,21 @@
     #endregion
 
     #region Parameters
-    [CmdletBinding(SupportsShouldProcess)]
+    [CmdletBinding(SupportsShouldProcess, PositionalBinding = $false)]
     param(
-        [Parameter(Mandatory, ValueFromPipeline, ValueFromPipelineByPropertyName)]
-        [Alias('ModulePath', 'FullName')]
+        [Parameter(Position = 0, Mandatory, ValueFromPipeline, ValueFromPipelineByPropertyName)]
+        [Alias('ModulePath', 'ModuleBasePath', 'FullName')]
         [string[]]$Path,
 
-        [Parameter()]
-        [Alias('RequiredVersion')]
+        [Parameter(Position = 1)]
+        [Alias('ModuleVersion', 'RequiredVersion')]
         [version]$Version = '0.1.0',
 
-        # TODO: Move to Utility module and name somehow (Get-[LoggedIn]WindowsUser, Get-[Current]WindowsIdentity)
+        # TODO: Use function from Utility module instead - (Get-WindowsUser).Name
         [Parameter()]
         [Alias('ModuleAuthor')]
         [ValidateNotNullOrEmpty()]
-        [string]$Author = ((Get-CIMInstance Win32_ComputerSystem).UserName -split '\\', 2 | Select-Object -Last 1),
+        [string]$Author = ((Get-CimInstance Win32_ComputerSystem).UserName -split '\\', 2 | Select-Object -Last 1),
 
         [Parameter()]
         [Alias('CompanyName')]
@@ -36,6 +39,7 @@
         [ValidateNotNullOrEmpty()]
         [string]$Description = 'No description yet.',
 
+        # TODO: Check if it is working correctly with object[] type
         [Parameter()]
         [object[]]$RequiredModules = @(),
 
@@ -54,98 +58,175 @@
         [Parameter()]
         [string[]]$AliasesToExport = @(),
 
+        # TODO: Implement adding configuration object
+        # [Parameter()]
+        # [object]$Configuration = @{},
+
+        [Parameter(Position = 2)]
+        [Alias('Loader')]
+        [switch]$LoaderModule = [switch]::NotPresent,
+
         [Parameter()]
-        [switch]$PassThru = $false
+        [switch]$PassThru = [switch]::NotPresent
     )
     #endregion
 
     #region Begin
     begin {
-        # TODO: Change string to ErrorRecord for error collection list
-        $errorCollection = New-Object System.Collections.Generic.List[string]
+        $errorCollection = New-Object List[ErrorRecord]
+        $moduleCollection = New-Object List[PSCustomObject]
 
-        $moduleCollection = $Path | ForEach-Object {
-            # TODO: Move to Utility module and create Get-Path function
-            # (of course -Path as string, -PathType enum, -IsValid false switch, -Absolute true switch)
-            # $absolutePath = $ExecutionContext.SessionState.Path.GetUnresolvedProviderPathFromPSPath($_)
-            $absolutePath = $_
-            $basePath = Resolve-Path (Split-Path $absolutePath -Parent)
+        $copyrightOwner = @($Author, $Company)[$Company -ne 'Unknown']
+        $copyrightText = @("(c) $(Get-Date -Format 'yyyy') $copyrightOwner. All rights reserved.", $Copyright)[$null -ne $Copyright]
 
-            $moduleName = Split-Path $absolutePath -Leaf
-            if (Test-Path $absolutePath) {
-                $errorCollection.Add("A module with the specified name $moduleName already exists in '$basePath' directory.")
-                return
-            }
-
-            [PSCustomObject]@{
-                Name       = $moduleName
-                Path       = $absolutePath
-                RootModule = "$moduleName.psm1"
-            }
+        if ($LoaderModule.IsPresent) {
+            $loaderManifestTemplate = Get-Content -Path (Join-Path $PSScriptRoot '..\data\LoaderModuleManifest.template')
+            $loaderScriptTemplate = Get-Content -Path (Join-Path $PSScriptRoot '..\data\InstallModuleScript.template')
         }
 
-        #if ($Company -ne 'Unknown') { $Company } else { $Author }
-        $copyrightOwner = @($Author, $Company)[$Company -ne 'Unknown']
-        #if ($null -ne $Copyright) { $Copyright } else { 'Default' }
-        $copyrightText = @("(c) $(Get-Date -Format 'yyyy') $copyrightOwner. All rights reserved.", $Copyright)[$null -ne $Copyright]
+        # TODO: Introduce new parameters
+        # See (tutorial): https://docs.microsoft.com/en-us/powershell/scripting/developer/module/how-to-write-a-powershell-module-manifest?view=powershell-5.1
+        # See (function): https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.core/new-modulemanifest?view=powershell-5.1
+        $baseManifestParams = @{
+            Author             = $Author
+            CompanyName        = $Company
+            Copyright          = $copyrightText
+            ModuleVersion      = $Version
+            Description        = $Description
+            PowerShellVersion  = "$($PSVersionTable.PSVersion.Major).$($PSVersionTable.PSVersion.Minor)"
+            RequiredModules    = $RequiredModules
+            RequiredAssemblies = $RequiredAssemblies
+            # NestedModules
+            FunctionsToExport  = $FunctionsToExport
+            CmdletsToExport    = $CmdletsToExport
+            VariablesToExport  = $VariablesToExport
+            AliasesToExport    = $AliasesToExport
+            # ModuleList
+            # FileList
+            PassThru           = $PassThru
+        }
     }
     #endregion
 
     #region Process
     process {
-        $moduleCollection | ForEach-Object {
-            # TODO: Introduce new parameters
-            # See (tutorial): https://docs.microsoft.com/en-us/powershell/scripting/developer/module/how-to-write-a-powershell-module-manifest?view=powershell-5.1
-            # See (function): https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.core/new-modulemanifest?view=powershell-5.1
-            $manifestParams = @{
-                Path               = Join-Path $_.Path "$($_.Name).psd1"
-                RootModule         = $_.RootModule
-                Author             = $Author
-                CompanyName        = $Company
-                Copyright          = $copyrightText
-                ModuleVersion      = $Version
-                Description        = $Description
-                PowerShellVersion  = "$($PSVersionTable.PSVersion.Major).$($PSVersionTable.PSVersion.Minor)"
-                RequiredModules    = $RequiredModules
-                RequiredAssemblies = $RequiredAssemblies
-                # NestedModules
-                FunctionsToExport  = $FunctionsToExport
-                CmdletsToExport    = $CmdletsToExport
-                VariablesToExport  = $VariablesToExport
-                AliasesToExport    = $AliasesToExport
-                # ModuleList
-                # FileList
-                PassThru           = $PassThru.IsPresent
-            }
-
-            # TODO: Remove after full implementation
-            # $manifestParams | Format-Table | Out-Host
-
-            if ($PSCmdlet.ShouldProcess($_.Path)) {
-                New-Item -Path $_.Path -ItemType Directory | Out-Null
-                New-Item -Path (Join-Path $_.Path 'src') -ItemType Directory | Out-Null
-                New-Item -Path (Join-Path $_.Path 'tests') -ItemType Directory | Out-Null
-                # TODO: Provide enum -RootModuleType to create additional/replace current root module file (different extensions of file)
-                # See (-RootModule): https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.core/new-modulemanifest?view=powershell-5.1
-                New-Item -Path (Join-Path $absolutePath "$moduleName.psm1") -ItemType File | Out-Null
-            }
-
-            if ($PSCmdlet.ShouldProcess($manifestParams.Path, 'New-ModuleManifest')) {
-                New-ModuleManifest @manifestParams
-            }
-        }
+        $moduleCollection.Add([PSCustomObject]@{
+            Name = Split-Path $Path -Leaf
+            Path = $Path
+        })
     }
     #endregion
 
     #region End
     end {
-        if ($errorCollection.Count -gt 0) {
-            foreach ($message in $errorCollection) {
-                Write-Error $message
+        $moduleCollection | ForEach-Object {
+            $newManifestParams = $baseManifestParams + @{
+                Path               = Join-Path $PSItem.Path "$($PSItem.Name).psd1"
+                RootModule         = "$($PSItem.Name).psm1"
             }
-            exit 1
+
+            # TODO: Replace with Get-Path -Absolute
+            $baseModulePath = Join-Path $PSItem.Path '..'
+            if (-not (Test-Path $baseModulePath -PathType Container)) {
+                $exception = New-Object DirectoryNotFoundException `
+                    "Cannot find directory '$baseModulePath' because it does not exist."
+                $errorCollection.Add((New-Object ErrorRecord $exception, 'New-ModuleScaffold', 'ObjectNotFound', $PSItem))
+                return
+            }
+
+            if (Test-Path $PSItem.Path) {
+                $exception = New-Object DirectoryFoundException `
+                    "A module with the specified name $($PSItem.Name) already exists in '$($PSItem.Path)' directory."
+                $errorCollection.Add((New-Object ErrorRecord $exception, 'New-ModuleScaffold', 'ResourceExists', $PSItem))
+                return
+            }
+
+            if ($PSCmdlet.ShouldProcess($PSItem.Path)) {
+                New-Item -Path $PSItem.Path -ItemType Directory | Out-Null
+                New-Item -Path (Join-Path $PSItem.Path '.\src') -ItemType Directory | Out-Null
+                New-Item -Path (Join-Path $PSItem.Path '.\tests') -ItemType Directory | Out-Null
+                New-Item -Path (Join-Path $PSItem.Path '.\tools') -ItemType Directory | Out-Null
+                New-Item -Path (Join-Path $PSItem.Path $newManifestParams.RootModule) -ItemType File | Out-Null
+            }
+
+            $loaderScriptPath = (Join-Path $PSItem.Path ".\tools\InstallModule.ps1")
+            if ($LoaderModule.IsPresent -and $PSCmdlet.ShouldProcess($loaderScriptPath, 'New-ScriptFile')) {
+                New-Item -Path $loaderScriptPath -ItemType File | Out-Null
+
+                $scriptContent = $loaderScriptTemplate -replace '{{ModuleName}}', $PSItem.Name `
+                	-replace '{{Version}}', $newManifestParams.ModuleVersion
+
+                $scriptContent | Set-Content -Path $loaderScriptPath -Encoding UTF8
+            }
+
+            $loaderModulePath = (Join-Path $PSItem.Path "$($PSItem.Name).Loader.psd1")
+            if ($LoaderModule.IsPresent -and $PSCmdlet.ShouldProcess($loaderModulePath, 'New-ModuleLoaderManifest')) {
+                New-Item -Path $loaderModulePath -ItemType File | Out-Null
+
+                $loaderContent = $loaderManifestTemplate -replace '{{NewGuid}}', (New-Guid) `
+                	-replace '{{Version}}', $newManifestParams.ModuleVersion `
+                    -replace '{{Author}}', $newManifestParams.Author `
+                    -replace '{{Company}}', $newManifestParams.CompanyName `
+                    -replace '{{Copyright}}', $newManifestParams.Copyright `
+                    -replace '{{Description}}', "$($PSItem.Name) module loader." `
+                    -replace '{{PSVersion}}', $newManifestParams.PowerShellVersion `
+                    -replace '{{ScriptsToProcess}}', "'.\tools\InstallModule.ps1'"
+
+                $loaderContent | Set-Content -Path $loaderModulePath -Encoding UTF8
+            }
+
+            if ($PSCmdlet.ShouldProcess($newManifestParams.Path, 'New-ModuleManifest')) {
+                New-ModuleManifest @newManifestParams
+            }
+
+            # TODO: Resolve issue with formatting
+            # if ($PSCmdlet.ShouldProcess($newManifestParams.Path, 'Update-ModuleManifest')) {
+            #     $updateModuleManifest = @{
+            #         Path = $newManifestParams.Path
+            #         RequireLicenseAcceptance = $false
+            #     }
+
+            #     if ($newManifestParams.RequiredModules.Count -gt 0) {
+            #         $updateModuleManifest.Add('RequiredModules', $newManifestParams.RequiredModules)
+            #         $updateModuleManifest.Add('ExternalModuleDependencies', $newManifestParams.RequiredModules)
+            #     }
+
+            #     Update-ModuleManifest @updateModuleManifest
+            # }
+
+            # TODO: Resolve issue with formatting and missing configuration properties after update
+            # if ($PSCmdlet.ShouldProcess($newManifestParams.Path, 'Update-ModuleManifestConfiguration') {
+            #     $updateModuleManifest = @{
+            #         PrivateData = @{
+            #             Configuration = '{{Configuration}}'
+            #         }
+            #         PassThru = $true
+            #     }
+
+            #     $moduleManifestTemplate = Update-ModuleManifest @updateModuleManifest
+
+            #     $moduleManifestContent = $moduleManifestTemplate `
+            #         -replace '#Configuration', '# Custom configuration properties' `
+            #         -replace "'{{Configuration}}'", "@{`n`n        Name = 'Value'`n`n    } # End of Configuration hashtable"
+
+            #     if ($newManifestParams.CmdletsToExport.Count -eq 0) {
+            #         $moduleManifestContent = $moduleManifestContent -replace '^CmdletsToExport', '# CmdletsToExport'
+            #     }
+
+            #     if ($newManifestParams.AliasesToExport.Count -eq 0) {
+            #         $moduleManifestContent = $moduleManifestContent -replace '^AliasesToExport', '# AliasesToExport'
+            #     }
+
+            #     $moduleManifestContent | Set-Content -Path $updateModuleManifest.Path -Encoding UTF8
+            # }
         }
-        exit 0
+
+        if ($errorCollection.Count -gt 0) {
+            foreach ($errorRecord in $errorCollection | Select-Object -SkipLast 1) {
+                Write-Error $errorRecord
+            }
+            throw $errorCollection | Select-Object -Last 1
+        }
     }
     #endregion
 }
