@@ -1,0 +1,14 @@
+param(
+    [switch]$Force = [switch]::NotPresent
+)
+
+Write-Verbose "Installing '{{ModuleName}}' required modules."
+# Install-Module -Name '{{ModuleDependencyName}}' -RequiredVersion '{{ModuleDependencyVersion}}' -Force:$Force
+
+try {
+    Write-Verbose "Installing '{{ModuleName}}' module."
+    Install-Module -Name {{ModuleName}} -RequiredVersion {{Version}} -Force:$Force
+} catch {
+    Write-Verbose "Importing '{{ModuleName}}' module locally."
+    Import-Module (Join-Path $PSScriptRoot '..\{{ModuleName}}.psd1') -Force:$Force
+}
