@@ -1,29 +1,29 @@
 # Gucu112.Powershell
 
-TODO: Add description (here and on github)
+Set of useful powershell utilities for computer and package management provided as separate modules.
 
 ## Import module locally
 
 Start from root project directory and use this command:
 
-```shell
+```powershell
 Import-Module '.\modules\Gucu112.Powershell.Utility\Gucu112.Powershell.Utility.psd1'
 ```
 
 You can also load single function:
 
-```shell
+```powershell
 Import-Module '.\modules\Gucu112.Powershell.PackageManagement\src\New-ModuleScaffold.psm1'
 ```
 
 Remember to remove module if you want to reload it:
 
-```shell
+```powershell
 Remove-Module 'Gucu112.Powershell.Utility' # module name (psd1)
 Remove-Module 'New-ModuleScaffold' # function name (psm1)
 ```
 
-## Create test module
+## Create new module
 
 Run following command from root project directory:
 
@@ -31,7 +31,7 @@ Run following command from root project directory:
 New-ModuleScaffold -Path '.\modules\Gucu112.Powershell.Test'
 ```
 
-## Create test functions in the module
+## Create new functions in the module
 
 Run following command from root project directory:
 
