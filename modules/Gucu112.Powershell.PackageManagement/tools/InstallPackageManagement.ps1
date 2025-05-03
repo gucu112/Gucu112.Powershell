@@ -38,7 +38,7 @@ Add-PackageProvider -Name 'NuGet' -Force -ErrorAction Stop
 Add-PackageSource -Name 'NuGetGallery' -ProviderName 'NuGet' -Location 'https://www.nuget.org/api/v2' -Trusted -Force
 
 # Install-Package
-Install-Package -Name 'ConfigurationHelper' -ProviderName 'NuGet' -Destination 'C:\packages'
+Install-Package -Name 'ConfigurationHelper' -ProviderName 'NuGet' -Destination 'C:\NuGet'
 
 ###
 # ChocolateyGet

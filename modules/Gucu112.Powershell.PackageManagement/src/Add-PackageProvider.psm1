@@ -21,9 +21,8 @@
 
     #region Begin
     begin {
-        if ($null -ne $PSCmdlet.MyInvocation.BoundParameters.ErrorAction) {
-            $ErrorAction = $PSCmdlet.MyInvocation.BoundParameters.ErrorAction
-        } else {
+        $ErrorAction = $PSCmdlet.MyInvocation.BoundParameters.ErrorAction
+        if ($null -eq $ErrorAction) {
             $ErrorAction = $ErrorActionPreference
         }
     }
