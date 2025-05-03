@@ -42,7 +42,7 @@
             $filePath = Join-Path $basePath "$_.psm1"
 
             if (Test-Path $filePath) {
-                $errorCollection.Add("A function with the specified name $_ already exists in '$moduleName' module.")
+                $errorCollection.Add("A function with the name $_ already exists in '$moduleName' module.")
                 return
             }
 
@@ -54,30 +54,34 @@
 
         $fileTemplate = Get-Content -Path (Join-Path $PSScriptRoot '..\data\NewFunction.template')
 
-        $emptyBlock = "{`n`n    }"
-        $beginBlock = $emptyBlock
-        $endBlock = $emptyBlock
+        $beginBlock = "{`n"
+        $processBlock = "{`n    `n    }"
+        $endBlock = "{`n"
 
         if ($ErrorHandling.IsPresent) {
-            $beginBlock = @'
-        {
-            # TODO: Change string to ErrorRecord for error collection list
-            $errorCollection = New-Object System.Collections.Generic.List[string]
+            $beginBlock += @'
+        $ErrorAction = $PSCmdlet.MyInvocation.BoundParameters.ErrorAction
+        if ($null -eq $ErrorAction) {
+            $ErrorAction = $ErrorActionPreference
         }
+
+        # TODO: Change string to ErrorRecord for error collection list
+        $errorCollection = New-Object System.Collections.Generic.List[string]
 '@
 
-            $endBlock = @'
-        {
-            if ($errorCollection.Count -gt 0) {
-                foreach ($message in $errorCollection) {
-                    Write-Error $message
-                }
-                exit 1
+            $endBlock += @'
+        if ($errorCollection.Count -gt 0) {
+            foreach ($message in $errorCollection) {
+                Write-Error $message
             }
-            exit 0
+            exit 1
         }
+        exit 0
 '@
         }
+
+        $beginBlock += "`n    }"
+        $endBlock += "`n    }"
     }
     #endregion
 
@@ -93,7 +97,7 @@
                     -replace '{{CmdletBindings}}', [string]::Empty `
                     -replace '{{Parameters}}', [string]::Empty `
                     -replace '{{BeginBlock}}', $beginBlock `
-                    -replace '{{ProcessBlock}}', $emptyBlock `
+                    -replace '{{ProcessBlock}}', $processBlock `
                     -replace '{{EndBlock}}', $endBlock
 
                 $fileContent | Set-Content -Path $_.Path -Encoding UTF8

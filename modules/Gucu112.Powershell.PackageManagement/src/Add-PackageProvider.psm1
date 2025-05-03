@@ -21,17 +21,21 @@
 
     #region Begin
     begin {
-        if ($Force.IsPresent -or (-not (Get-PackageProvider -Name $ProviderName -ErrorAction Ignore))) {
-            # TODO: Check if prompt is running with elevated privileges
-            # Message: Administrator rights are required to install '$ProviderName' package provider.
-            # Log on to the computer with an account that has Administrator rights, and then try again.
-            # You can also try running the Windows PowerShell session with elevated rights (Run as Administrator).
+        $ErrorAction = $PSCmdlet.MyInvocation.BoundParameters.ErrorAction
+        if ($null -eq $ErrorAction) {
+            $ErrorAction = $ErrorActionPreference
+        }
+    }
+    #endregion
 
+    #region Process
+    process {
+        if ($Force.IsPresent -or (-not (Get-PackageProvider -Name $ProviderName -ErrorAction Ignore))) {
             if ($ProviderName -eq 'PowerShellGet') {
-                Install-Module 'PowerShellGet' -AllowClobber -Force:$Force
+                Install-Module 'PowerShellGet' -AllowClobber -Force:$Force -ErrorAction $ErrorAction
             }
 
-            Install-PackageProvider -Name $ProviderName -Force:$Force
+            Install-PackageProvider -Name $ProviderName -Force:$Force -ErrorAction $ErrorAction
         }
     }
     #endregion
