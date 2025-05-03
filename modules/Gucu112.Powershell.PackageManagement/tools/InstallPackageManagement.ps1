@@ -2,9 +2,9 @@
 # Init
 ###
 
-try {
-    Import-Module Gucu112.Powershell.PackageManagement
-} catch {
+if (Find-Module Gucu112.Powershell.PackageManagement -ErrorAction Ignore) {
+    Install-Module Gucu112.Powershell.PackageManagement
+} else {
     Import-Module (Join-Path $PSScriptRoot '..\Gucu112.Powershell.PackageManagement.psd1')
 }
 
