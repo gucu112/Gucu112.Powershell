@@ -94,4 +94,31 @@ Implementation
 
 * Check what will happen when we re-use function across module and import module with -Prefix parameter
   - https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.core/import-module?view=powershell-5.1
-* What else?
+
+## Changelog
+
+### v0.1.0
+
+* Limit Get-PackageProvider output properties
+* Improve error handling
+* Handle ErrorAction in Add-PackageProvider function
+* Install remote modules instead of only importing them
+* Change approach to loading modules in scripts
+* Update Utility module and manifest
+* Improve script parameters
+* Implemented only WindowsIdentity functions
+* Add install module script
+* Add Get-CurrentWindows functions
+* Update Utility module manifest
+* Update PackageManagement manifest
+* Add configuration section
+* Update Add-PackageSource function
+* Fix PowerShellGet update in Add-PackageProvider function
+* Add required modules and update manifest
+* Add BetterTls support in Utility package
+* Add .NET security protocol update script
+* Improve and rename package management main script
+* Rename test file template
+* Default source for Add-PackageSource
+* Install PowerShellGet module in Add-PackageProvider
+* Update README & changelog
