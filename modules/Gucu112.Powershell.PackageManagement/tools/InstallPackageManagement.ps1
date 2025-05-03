@@ -19,7 +19,7 @@ Get-PSRepository -Name 'PSGallery'
 ###
 
 # Add-PSPackageProvider
-Add-PackageProvider -Name 'PowerShellGet' -Force
+Add-PackageProvider -Name 'PowerShellGet' -Force -ErrorAction Stop
 
 # Add-PSPackageSource
 Add-PackageSource -Name 'PSGallery' -ProviderName 'PowerShellGet' -Location 'https://www.powershellgallery.com/api/v2' -Trusted -Force
@@ -32,7 +32,7 @@ Install-Module -Name 'dbatools'
 ###
 
 # Add-NuGetPackageProvider
-Add-PackageProvider -Name 'NuGet' -Force
+Add-PackageProvider -Name 'NuGet' -Force -ErrorAction Stop
 
 # Add-NuGetPackageSource -Default
 Add-PackageSource -Name 'NuGetGallery' -ProviderName 'NuGet' -Location 'https://www.nuget.org/api/v2' -Trusted -Force
@@ -45,7 +45,7 @@ Install-Package -Name 'ConfigurationHelper' -ProviderName 'NuGet' -Destination '
 ###
 
 # Add-ChocolateyPackageProvider
-Add-PackageProvider -Name 'ChocolateyGet' -Force
+Add-PackageProvider -Name 'ChocolateyGet' -Force -ErrorAction Stop
 
 # Add-ChocolateyPackageSource -Default
 Add-PackageSource -Name 'Chocolatey' -ProviderName 'ChocolateyGet' -Location 'https://www.chocolatey.org/api/v2' -Trusted -Force
