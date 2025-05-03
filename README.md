@@ -2,6 +2,28 @@
 
 Set of useful powershell utilities for computer and package management provided as separate modules.
 
+## Prerequisites
+
+In order to run Powershell scripts you need to enable it. You can either bypass it entirely:
+
+```powershell
+Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope LocalMachine
+```
+
+Or another option is to enable only local network scripts for current user (recommended):
+
+```powershell
+Set-ExecutionPolicy -ExecutionPolicy Unrestricted -Scope CurrentUser
+```
+
+Next you need to setup package management so modules can be loaded correctly if needed:
+
+```powershell
+Invoke-Expression -Command "& .\modules\Gucu112.Powershell.PackageManagement\tools\InstallPackageManagement.ps1"
+```
+
+It needs to be run with administrator rights as package providers are located in `C:\Program Files\PackageManagement\ProviderAssemblies`.
+
 ## Import module locally
 
 Start from root project directory and use this command:
@@ -10,13 +32,19 @@ Start from root project directory and use this command:
 Import-Module '.\modules\Gucu112.Powershell.Utility\Gucu112.Powershell.Utility.psd1'
 ```
 
-You can also load single function:
+If required modules are not loaded then you need to use install script:
+
+```powershell
+Invoke-Expression -Command "& .\modules\Gucu112.Powershell.Utility\tools\InstallModule.ps1"
+```
+
+You can also load single function which is useful for debugging:
 
 ```powershell
 Import-Module '.\modules\Gucu112.Powershell.PackageManagement\src\New-ModuleScaffold.psm1'
 ```
 
-Remember to remove module if you want to reload it:
+Remember to remove module/function if you want to reload it:
 
 ```powershell
 Remove-Module 'Gucu112.Powershell.Utility' # module name (psd1)
