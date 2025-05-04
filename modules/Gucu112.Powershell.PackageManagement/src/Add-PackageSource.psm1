@@ -21,10 +21,10 @@ function Add-PackageSource {
         [string]$Location,
 
         [Parameter()]
-        [switch]$Trusted = $false,
+        [switch]$Trusted = [switch]::NotPresent,
 
         [Parameter()]
-        [switch]$Force = $false
+        [switch]$Force = [switch]::NotPresent
     )
     #endregion
 

@@ -15,7 +15,7 @@
         [string]$ProviderName,
 
         [Parameter()]
-        [switch]$Force = $false
+        [switch]$Force = [switch]::NotPresent
     )
     #endregion
 
@@ -28,6 +28,7 @@
             # You can also try running the Windows PowerShell session with elevated rights (Run as Administrator).
 
             if ($ProviderName -eq 'PowerShellGet') {
+                # TODO: Add parameter to specify particular version
                 Install-Module 'PowerShellGet' -AllowClobber -Force:$Force
             }
 
