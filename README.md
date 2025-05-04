@@ -126,14 +126,15 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE.txt) 
     - Install-Script
   - Utility
     - Get-Path -Absolute
-    - ConvertFrom-SecureStringUsingBSTR
-    - Write-Message
+    - Resolve-Path -SkipValidate
     - Get-WindowsIdentity -LoggedIn, -Anonymous
-- Enhancements
+    - ConvertFrom-SecureStringAsPlainText
+    - Write-Message (?)
+- Improvements
   - Replace `$_` with `$PSItem` for better visibility
   - Change string to ErrorRecord for error collection list
   - Try System.Collections.ArrayList as error collection list
-- Documentation & Unit Tests
+- Documentation & Tests
   - Get-WindowsIdentity
   - Test-WindowsIdentity
 - Research
