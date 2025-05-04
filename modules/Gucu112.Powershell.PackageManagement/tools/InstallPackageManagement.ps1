@@ -44,7 +44,7 @@ Add-PackageProvider -Name 'NuGet' -Force:$Force -ErrorAction Stop | Select-Objec
 Add-PackageSource -Name 'NuGetGallery' -ProviderName 'NuGet' -Location 'https://www.nuget.org/api/v2' -Trusted -Force:$Force -ErrorAction Stop
 
 # Install-Package
-Install-Package -Name 'ConfigurationHelper' -ProviderName 'NuGet' -Destination 'C:\NuGet' -Force:$Force
+Install-Package -Name 'ConfigurationHelper' -ProviderName 'NuGet' -Destination 'C:\NuGet' -Force:$Force | Out-Null
 
 ###
 # ChocolateyGet
@@ -55,3 +55,13 @@ Add-PackageProvider -Name 'ChocolateyGet' -Force:$Force -ErrorAction Stop | Sele
 
 # Add-ChocolateyPackageSource -Default
 Add-PackageSource -Name 'Chocolatey' -ProviderName 'ChocolateyGet' -Location 'https://www.chocolatey.org/api/v2' -Trusted -Force:$Force -ErrorAction Stop
+
+###
+# Test
+###
+
+# Get-PackageSource
+Get-PackageSource | Format-Table
+
+# Invoke-Pester
+(Get-PackageSource).Count | Should -Be 3
