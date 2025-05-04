@@ -12,7 +12,6 @@ function Add-PackageSource {
         [string]$Name,
 
         [Parameter(Mandatory)]
-        # TODO: Move list of available providers to configuration
         [ValidateSet('PowerShellGet', 'NuGet', 'ChocolateyGet')]
         [string]$ProviderName,
 
@@ -30,17 +29,20 @@ function Add-PackageSource {
 
     #region Begin
     begin {
-        # TODO: Move to module configuration
-        $providerVersionMap = @{
-            PowerShellGet = '2.2.5'
-            NuGet = '2.8.5.201'
-            ChocolateyGet = '3.1.1'
+        $ErrorAction = $PSCmdlet.MyInvocation.BoundParameters.ErrorAction
+        if ($null -eq $ErrorAction) {
+            $ErrorAction = $ErrorActionPreference
         }
+
+        $providerVersionMap = $PSCmdlet.MyInvocation.MyCommand.Module.PrivateData.Configuration.PackageProviderVersionMap
 
         if ($Force.IsPresent -or (-not (Get-PackageProvider -Name $ProviderName -ListAvailable -ErrorAction Ignore))) {
-            Import-PackageProvider -Name $ProviderName -MinimumVersion $providerVersionMap[$ProviderName] -ErrorAction Stop -Force:$Force | Out-Null
+            Import-PackageProvider -Name $ProviderName -MinimumVersion $providerVersionMap[$ProviderName] -Force:$Force -ErrorAction Stop | Out-Null
         }
+    }
 
+    #region Process
+    process {
         switch ($ProviderName) {
             'PowerShellGet' {
                 if ($Force.IsPresent -and (Get-PSRepository -Name $Name -ErrorAction Ignore)) {
@@ -62,14 +64,14 @@ function Add-PackageSource {
                     }
                 }
 
-                Register-PSRepository @repositoryParams | Out-Null
+                Register-PSRepository @repositoryParams -ErrorAction $ErrorAction | Out-Null
             }
             default {
                 if ($Force.IsPresent -and (Get-PackageSource -Name $Name -ErrorAction Ignore)) {
                     Unregister-PackageSource -Name $Name -Force
                 }
 
-                Register-PackageSource -Name $Name -ProviderName $ProviderName -Location $Location -Trusted:$Trusted -Force:$Force
+                Register-PackageSource -Name $Name -ProviderName $ProviderName -Location $Location -Trusted:$Trusted -Force:$Force -ErrorAction $ErrorAction
             }
         }
     }

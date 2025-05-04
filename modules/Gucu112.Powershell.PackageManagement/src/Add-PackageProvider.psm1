@@ -10,7 +10,6 @@
     param(
         [Parameter(Mandatory)]
         [Alias('Name')]
-        # TODO: Move list of available providers to configuration
         [ValidateSet('PowerShellGet', 'NuGet', 'ChocolateyGet')]
         [string]$ProviderName,
 
