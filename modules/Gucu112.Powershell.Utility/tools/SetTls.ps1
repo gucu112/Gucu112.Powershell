@@ -12,3 +12,5 @@ if (Find-Module Gucu112.Powershell.Utility -ErrorAction Ignore) {
 }
 
 Set-Tls -Tls12 -Confirm:$Confirm
+
+Get-Tls
