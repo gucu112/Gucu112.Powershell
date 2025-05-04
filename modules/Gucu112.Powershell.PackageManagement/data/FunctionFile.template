@@ -22,5 +22,4 @@ function {{FunctionName}} {
     end {{EndBlock}}
     #endregion
 }
-
 {{AliasDefinition}}

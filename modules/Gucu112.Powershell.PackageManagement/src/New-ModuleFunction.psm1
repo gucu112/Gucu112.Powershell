@@ -47,19 +47,21 @@ function New-ModuleFunction {
             $testFileTemplate = Get-Content -Path (Join-Path $PSScriptRoot '..\data\FunctionTestFile.template')
         }
 
-        $emptyBlock = "{`n`n    }"
-        $beginBlock = $emptyBlock
-        $endBlock = $emptyBlock
+        $beginBlock = "{`n"
+        $processBlock = "{`n    `n    }"
+        $endBlock = "{`n"
 
         if ($ErrorHandling.IsPresent) {
             $beginBlock = @'
-{
-        $errorCollection = New-Object System.Collections.Generic.List[System.Management.Automation.ErrorRecord]
-    }
+        $ErrorAction = $PSCmdlet.MyInvocation.BoundParameters.ErrorAction
+        if ($null -eq $ErrorAction) {
+            $ErrorAction = $ErrorActionPreference
+        }
+
+        $errorCollection = New-Object List[ErrorRecord]
 '@
 
             $endBlock = @'
-{
         if ($errorCollection.Count -gt 0) {
             foreach ($errorRecord in $errorCollection | Select-Object -SkipLast 1) {
                 Write-Error $errorRecord
@@ -67,9 +69,11 @@ function New-ModuleFunction {
             }
             throw $errorCollection | Select-Object -Last 1
         }
-    }
 '@
         }
+
+        $beginBlock += "`n    }"
+        $endBlock += "`n    }"
     }
     #endregion
 
@@ -101,7 +105,7 @@ function New-ModuleFunction {
                     -replace '{{CmdletBindings}}', [string]::Empty `
                     -replace '{{Parameters}}', [string]::Empty `
                     -replace '{{BeginBlock}}', $beginBlock `
-                    -replace '{{ProcessBlock}}', $emptyBlock `
+                    -replace '{{ProcessBlock}}', $processBlock `
                     -replace '{{EndBlock}}', $endBlock
 
                 $fileContent | Set-Content -Path $PSItem.Path -Encoding UTF8

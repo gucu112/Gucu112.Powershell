@@ -54,6 +54,7 @@ PowerShellVersion = '5.1'
 RequiredModules = @(
     'PackageManagement'
     'PowerShellGet'
+    # 'Gucu112.Powershell.Utility'
 )
 
 # Assemblies that must be loaded prior to importing this module
@@ -109,6 +110,25 @@ PrivateData = @{
 
     # Custom configuration properties of this module
     Configuration = @{
+
+        PackageProviderVersionMap = @{
+            PowerShellGet = '2.2.5'
+            NuGet = '2.8.5'
+            ChocolateyGet = '4.1.0'
+        }
+
+        PackageProviderProperties = @(
+            'Name',
+            'Version',
+            'Source',
+            'Status',
+            'FromTrustedSource',
+            'Summary',
+            'SwidTags',
+            'CanonicalId',
+            'Dependencies',
+            'Links'
+        )
 
     } # End of Configuration hashtable
 
