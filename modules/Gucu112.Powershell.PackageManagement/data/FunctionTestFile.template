@@ -1,7 +1,6 @@
 Describe "{{FunctionName}}" {
     BeforeAll {
-        $modulePath = Join-Path $PSScriptRoot '..\src\{{FunctionName}}.psm1'
-        Import-Module $modulePath
+        Import-Module (Join-Path $PSScriptRoot '..\src\{{FunctionName}}.psm1')
     }
 
     AfterAll {
@@ -22,19 +21,31 @@ Describe "{{FunctionName}}" {
 
             $scriptBlock | Should -Not -Throw
 
-            $null = Invoke-Command $scriptBlock
-
             Should -Invoke {{FunctionName}} -Times 1
+        }
+
+        It "does not work" {
+            $scriptBlock = { {{FunctionName}} -NotExisting }
+
+            $scriptBlock | Should -Throw "A parameter cannot be found that matches parameter name 'NotExisting'."
+
+            Should -Invoke {{FunctionName}} -Times 0
         }
     }
 
     Context "e2e tests" {
         It "works" {
-            # test
+            $scriptBlock = { {{FunctionName}} }
+
+            $returnValue = Invoke-Command $scriptBlock
+
+            $returnValue | Should -BeTrue
         }
 
         It "does not work" {
-            # test
+            $scriptBlock = { {{FunctionName}} }
+
+            $scriptBlock | Should -Throw
         }
     }
 }

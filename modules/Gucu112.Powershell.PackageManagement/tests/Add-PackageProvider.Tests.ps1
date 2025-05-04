@@ -1,11 +1,14 @@
 Describe "Add-PackageProvider" {
     BeforeAll {
-        $modulePath = Join-Path $PSScriptRoot '..\src\Add-PackageProvider.psm1'
-        Import-Module $modulePath
+        Import-Module (Join-Path $PSScriptRoot '..\src\Add-PackageProvider.psm1')
     }
 
     AfterAll {
-        Remove-Module 'Add-PackageProvider'
+        Remove-Module 'Add-PackageProvider' -Force
+    }
+
+    It "does have proper parameters" {
+        Get-Command Add-PackageProvider | Should -HaveParameter ProviderName -Type ([string])
     }
 
     Context "unit tests" {
@@ -13,24 +16,22 @@ Describe "Add-PackageProvider" {
             Mock Add-PackageProvider {}
         }
 
-        It "works" {
-            $scriptBlock = { Add-PackageProvider -Name 'NuGet' }
+        It "works with <_> provider" -ForEach @('PowerShellGet', 'NuGet', 'ChocolateyGet') {
+            $scriptBlock = { Add-PackageProvider -Name $PSItem }
 
             $scriptBlock | Should -Not -Throw
+
+            Should -Invoke Add-PackageProvider -Times 1
         }
     }
 
     Context "e2e tests" {
-        BeforeAll {
-            # setup
-        }
-
-        AfterAll {
-            # teardown
-        }
-
         It "works" {
-            # test
+            # test goes here
+        }
+
+        It "does not work" {
+            # test goes here
         }
     }
 }

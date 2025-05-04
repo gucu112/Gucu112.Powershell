@@ -1,7 +1,6 @@
 Describe "New-ModuleScaffold" {
     BeforeAll {
-        $modulePath = Join-Path $PSScriptRoot '..\src\New-ModuleScaffold.psm1'
-        Import-Module $modulePath
+        Import-Module (Join-Path $PSScriptRoot '..\src\New-ModuleScaffold.psm1')
 
         $script:currentPSVersion = "$($PSVersionTable.PSVersion.Major).$($PSVersionTable.PSVersion.Minor)"
     }
@@ -21,40 +20,41 @@ Describe "New-ModuleScaffold" {
             Mock New-ModuleScaffold {}
         }
 
-        It "works when single parameter provided" {
-            $scriptBlock = { New-ModuleScaffold -Path '.\Test' }
-
+        It "works when single parameter provided" -ForEach @(
+            @{scriptBlock = { New-ModuleScaffold '.\Test' }}
+            @{scriptBlock = { New-ModuleScaffold -Path '.\Test' }}
+        ) {
             $scriptBlock | Should -Not -Throw
-
-            $null = Invoke-Command $scriptBlock
 
             Should -Invoke New-ModuleScaffold -Times 1
         }
 
-        It "works when multiple parameters provided" {
-            $scriptBlock = { New-ModuleScaffold '.\Test1', '.\Test2', '.\Test3' }
-
+        It "works when multiple parameters provided" -ForEach @(
+            @{scriptBlock = { New-ModuleScaffold '.\Test1', '.\Test2', '.\Test3' }}
+            @{scriptBlock = { New-ModuleScaffold -Path '.\Test1', '.\Test2', '.\Test3' }}
+        ) {
             $scriptBlock | Should -Not -Throw
-
-            $null = Invoke-Command $scriptBlock
 
             Should -Invoke New-ModuleScaffold -Times 1
         }
 
-        It "works when parameters provided through pipeline" {
+        It "works when parameters provided through pipeline" -ForEach @(
+            @{scriptBlock = { New-ModuleScaffold '.\Test1', '.\Test2', '.\Test3' }}
+            @{scriptBlock = { New-ModuleScaffold -Path '.\Test1', '.\Test2', '.\Test3' }}
+        ) {
             $scriptBlock = { 'Test1', 'Test2', 'Test3' | New-ModuleScaffold }
 
             $scriptBlock | Should -Not -Throw
-
-            $null = Invoke-Command $scriptBlock
 
             Should -Invoke New-ModuleScaffold -Times 3
         }
 
         It "does not work when invalid parameter provided" {
-            $scriptBlock = { New-ModuleScaffold -Test }
+            $scriptBlock = { New-ModuleScaffold -NotExisting }
 
-            $scriptBlock | Should -Throw "A parameter cannot be found that matches parameter name 'Test'."
+            $scriptBlock | Should -Throw "A parameter cannot be found that matches parameter name 'NotExisting'."
+
+            Should -Invoke New-ModuleScaffold -Times 0
         }
     }
 

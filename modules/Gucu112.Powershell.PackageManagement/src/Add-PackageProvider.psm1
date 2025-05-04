@@ -14,7 +14,7 @@
         [string]$ProviderName,
 
         [Parameter()]
-        [switch]$Force = $false
+        [switch]$Force = [switch]::NotPresent
     )
     #endregion
 
