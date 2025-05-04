@@ -36,7 +36,7 @@ New-ModuleScaffold -Path '.\modules\Gucu112.Powershell.Test'
 Run following command from root project directory:
 
 ```shell
-New-ModuleFunction -Name @('New-Thing', 'Get-Thing') -Path '.\modules\Gucu112.Powershell.Test'
+New-ModuleFunction -Name @('Get-Thing', 'New-Thing') -Path '.\modules\Gucu112.Powershell.Test'
 ```
 
 ## Tests
@@ -45,25 +45,66 @@ Implementation
 
 ## Ideas
 
-* Functions
+* Functions & Scripts
   - Package Management
-    - New-ScriptFileInfo
-    - Install-Script
+    - New-ScriptFile (use New-ScriptFileInfo)
+    - Install-ModuleLocally
+    - Get-PSModulePath
+    - Set-PSModulePath
+    - Add-PSModulePath
+    - Get-StandardPSModulePath
   - Utility
+    - Get-DnsDomain, Get-DnsHostEntry
     - Get-Path -Absolute
     - ConvertFrom-SecureStringUsingBSTR
     - Write-Message
-    - Get-WindowsIdentity -LoggedIn, -Anonymous
+    - Get-FileEncoding
+    - Set-FileEncoding
+    - Compare-SecureString
+    - Compare-PSCredential
+    - Register-ScheduledTask
+    - Unregister-ScheduledTask
+    - New-ScheduledTaskXML
+    - Merge-ScheduledTaskXML
+    - RemoveTempFiles
 * Enhancements
-  - Replace `$_` with `$PSItem` for better visibility
-  - Change string to ErrorRecord for error collection list
-  - Try System.Collections.ArrayList as error collection list
+  - Add `using` section to function file template
+  - Add `Write-Verbose` messages where applicable
+  - Always use `[switch]::Present` and `[switch]::NotPresent` as default values for switches
+  - Change `string` to `ErrorRecord` for error collection list
+  - Move C# files to Visual Studio solution
+  - Check which encoding should I apply when calling `Get-Content` and `Set-Content` (set default encoding)
 * Documentation & Unit Tests
+  - New-ModuleScaffold
+  - New-ModuleFunction
   - Get-WindowsIdentity
   - Test-WindowsIdentity
 
 ## Research
 
-* Check what will happen when we re-use function across module and import module with -Prefix parameter
+* Investigate how to install PowerShellGet module
+  - https://docs.microsoft.com/en-us/powershell/scripting/gallery/installing-psget?view=powershell-5.1
+* Investigate following modules and functions
+  - Core (https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.core/?view=powershell-5.1)
+    - Get-Module
+  - PowerShellGet (https://docs.microsoft.com/en-us/powershell/module/powershellget/?view=powershell-5.1)
+    - Find-Module
+    - Find-Script
+    - Get-InstalledModule
+    - Get-InstalledScript
+    - Install-Script
+    - New-ScriptFileInfo
+    - Uninstall-Module
+    - Uninstall-Script
+  - PackageManagement (https://docs.microsoft.com/en-us/powershell/module/packagemanagement/?view=powershell-5.1)
+    - Find-Package
+    - Get-Package
+    - Uninstall-Package
+* Investigate how multiple errors are thrown (when `CompileCSharp.ps1` script fails)
+* Update module manifest when calling `New-ModuleScaffold` or `New-ModuleFunction` function (current code commented out)
+* Add and update `PrivateData.PSData.ExternalModuleDependencies` module manifest property automatically
+* Check different root module types (see `-RootModule` parameter)
+  - https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.core/new-modulemanifest?view=powershell-5.1
+* Check what will happen when we re-use function across module and import module with `-Prefix` parameter
   - https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.core/import-module?view=powershell-5.1
 * What else?
