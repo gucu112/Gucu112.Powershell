@@ -5,7 +5,9 @@
     Author = 'Gucu112'
     CompanyName = 'Unknown'
     Copyright = '(c) 2022 Gucu112. All rights reserved.'
-    Description = 'Gucu112.Powershell.Utility module installer.'
+    Description = 'Gucu112.Powershell.Utility module loader.'
     PowerShellVersion = '5.1'
-    ScriptsToProcess = @('tools\InstallModule.ps1')
+    ScriptsToProcess = @(
+        '.\tools\InstallModule.ps1'
+    )
 }

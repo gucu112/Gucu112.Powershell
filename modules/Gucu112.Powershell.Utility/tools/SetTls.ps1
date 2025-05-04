@@ -1,7 +1,11 @@
 param(
-    [switch]$Force = $false,
-    [switch]$Confirm
+    [switch]$Force = [switch]::NotPresent,
+    [switch]$Confirm = [switch]::Present
 )
+
+if ($Force.IsPresent) {
+    $Confirm = [switch]::NotPresent
+}
 
 try {
     Write-Verbose "Importing 'Gucu112.Powershell.Utility' module."
