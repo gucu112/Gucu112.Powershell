@@ -24,5 +24,5 @@ do
     $dataTable += $response
 }
 while ((Get-Date) -lt $endDate)
-Write-Host "Ping google.com $($data.Count) times in $((Get-Date) - $startDate)"
+Write-Host "Ping google.com $($dataTable.Count) times in $((Get-Date) - $startDate)"
 $dataTable | Format-Table
