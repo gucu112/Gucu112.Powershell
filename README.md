@@ -122,9 +122,14 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE.txt) 
 - Create kanban board
 - Functions
   - Package Management
-    - New-ScriptFileInfo
-    - Install-Script
+    - New-ScriptFile (use New-ScriptFileInfo)
+    - Install-ModuleLocally
+    - Get-PSModulePath
+    - Set-PSModulePath
+    - Add-PSModulePath
+    - Get-StandardPSModulePath
   - Utility
+    - Get-DnsDomain, Get-DnsHostEntry
     - Get-Path -Absolute
     - Resolve-Path -SkipValidate
     - Get-WindowsIdentity -LoggedIn, -Anonymous
