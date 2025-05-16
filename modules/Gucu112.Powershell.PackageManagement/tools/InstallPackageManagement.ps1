@@ -24,6 +24,8 @@ Get-PSRepository -Name 'PSGallery'
 # PowerShellGet
 ###
 
+# TODO: Investigate how to unload/remove 'PackageManagement' and 'PowerShellGet' modules before update/install 'PowerShellGet' module
+
 # Add-PSPackageProvider
 Add-PackageProvider -Name 'PowerShellGet' -Force:$Force -ErrorAction Stop | Select-Object -Property $packageProviderProperties
 
@@ -65,3 +67,5 @@ Get-PackageSource | Format-Table
 
 # Invoke-Pester
 (Get-PackageSource).Count | Should -Be 3
+
+# TODO: Check also if all package sources are trusted
