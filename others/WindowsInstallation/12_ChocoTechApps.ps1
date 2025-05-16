@@ -30,3 +30,8 @@ Install-Package 'k-litecodecpackfull' -Source Chocolatey -AcceptLicense
 
 # Cleanup
 Get-ChildItem -Path '~\Desktop' -Filter 'asio4all*.lnk' | Remove-Item
+
+# Update Chocolatey packages
+$updatePackagesProperties = @('Name', @{Label = 'CurrentVersion'; Expression = { $_.Version } }, @{Label = 'LatestVersion'; Expression = { (Find-Package $_.Name -Provider ChocolateyGet).Version } })
+$updatePackages = Get-Package -ProviderName ChocolateyGet | Select-Object -Property $updatePackagesProperties | Where-Object { $_.CurrentVersion -lt $_.LatestVersion }
+$updatePackages | ForEach-Object { Install-Package -Name $_.Name -Source Chocolatey -AcceptLicense -ErrorAction SilentlyContinue | Out-Default }

@@ -13,5 +13,5 @@ Find-WinGetPackage -Name 'OneNote' -MatchOption Equals -Source msstore | Install
 # Install Google Chrome
 Find-WinGetPackage -Id 'Google.Chrome' -MatchOption Equals -Source winget | Install-WinGetPackage -Mode Silent
 
-# Update all installed packages
+# Update WinGet packages
 Get-WinGetPackage | Where-Object IsUpdateAvailable | Update-WinGetPackage -Mode Silent

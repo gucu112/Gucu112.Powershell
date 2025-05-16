@@ -40,4 +40,4 @@ function New-ShortcutItem {
     $shortcut.Save()
 }
 
-New-ShortcutItem -Name 'WinMerge Test' -TargetPath "C:\Users\BasowQA\AppData\Local\Programs\WinMerge\WinMergeU.exe"
+# New-ShortcutItem -Name 'WinMerge Test' -TargetPath "C:\Users\BasowQA\AppData\Local\Programs\WinMerge\WinMergeU.exe"
