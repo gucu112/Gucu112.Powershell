@@ -1,13 +1,8 @@
 # TODO: Check if it works without setting up the Chocolatey package provider
 # Invoke-Expression -Command "& .\modules\Gucu112.Powershell.PackageManagement\tools\InstallPackageManagement.ps1"
 
-# CPlusPlus
-@('vcredist-all', 'directx') | ForEach-Object {
-    Find-Package $PSItem -Source Chocolatey | Install-Package -AcceptLicense
-}
-
-# CSharp
-@('dotnetfx', 'dotnet-sdk') | ForEach-Object {
+# CPlusPlus & CSharp
+@('vcredist-all', 'directx', 'dotnetfx', 'dotnet-sdk') | ForEach-Object {
     Find-Package $PSItem -Source Chocolatey | Install-Package -AcceptLicense
 }
 
@@ -22,10 +17,6 @@ Install-Package 'nodejs-lts' -Source Chocolatey -AcceptLicense
 
 # Java
 Install-Package 'openjdk' -Source Chocolatey -AcceptLicense
-
-# TODO: Move to documentation
-# NSIS Setup Parameters
-# https://nsis.sourceforge.io/Docs/Chapter3.html
 
 # Audio & Video
 Install-Package 'k-litecodecpackfull' -Source Chocolatey -AcceptLicense
