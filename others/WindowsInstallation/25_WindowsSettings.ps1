@@ -20,3 +20,9 @@ Add-ItemProperty -Path $HKCU_Explorer_Advanced -Name 'TaskbarAl' -PropertyType D
 
 # Hide (0) or Show (1) task view button
 Add-ItemProperty -Path $HKCU_Explorer_Advanced -Name 'ShowTaskViewButton' -PropertyType DWord -Value 0
+
+# Explorer enable libraries
+# TODO: Show libraries in the navigation pane
+
+# Clipboard history settings
+# TODO: Turn on clipboard history (Win+V)

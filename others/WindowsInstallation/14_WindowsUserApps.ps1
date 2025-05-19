@@ -13,5 +13,13 @@ Find-WinGetPackage -Name 'OneNote' -MatchOption Equals -Source msstore | Install
 # Install Google Chrome
 Find-WinGetPackage -Id 'Google.Chrome' -MatchOption Equals -Source winget | Install-WinGetPackage -Mode Silent
 
+# Install Spotify & VLC
+Find-WinGetPackage -Name 'Spotify' -MatchOption Equals -Source winget | Install-WinGetPackage -Mode Silent
+Find-WinGetPackage -Id 'VideoLAN.VLC' -MatchOption Equals -Source winget | Install-WinGetPackage -Mode Silent
+
+# Install utility apps
+Find-WinGetPackage -Id 'TreeSize.Free' -Source winget | Install-WinGetPackage -Mode Silent
+Find-WinGetPackage -Name 'WinMerge' -MatchOption Equals -Source winget | Install-WinGetPackage -Mode Silent
+
 # Update WinGet packages
 Get-WinGetPackage | Where-Object IsUpdateAvailable | Update-WinGetPackage -Mode Silent

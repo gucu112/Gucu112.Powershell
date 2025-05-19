@@ -41,3 +41,5 @@ function New-ShortcutItem {
 }
 
 # New-ShortcutItem -Name 'WinMerge Test' -TargetPath "C:\Users\BasowQA\AppData\Local\Programs\WinMerge\WinMergeU.exe"
+
+# TODO: How to change directory icon

@@ -18,17 +18,18 @@ Install-Package 'powershell-core' -Source Chocolatey -AcceptLicense
 Install-Package 'python' -Source Chocolatey -AdditionalArguments '--paramsglobal' -PackageParameters "/InstallDir:C:\Python" -AcceptLicense
 
 # JavaScript
-Install-Package 'nodejs' -Source Chocolatey -AcceptLicense
+Install-Package 'nodejs-lts' -Source Chocolatey -AcceptLicense
+
+# Java
+Install-Package 'openjdk' -Source Chocolatey -AcceptLicense
 
 # TODO: Move to documentation
 # NSIS Setup Parameters
 # https://nsis.sourceforge.io/Docs/Chapter3.html
 
 # Audio & Video
-Install-Package 'asio4all' -Source Chocolatey -InstallArguments "/D=C:\Program Files (x86)\ASIO4ALL" -AcceptLicense
 Install-Package 'k-litecodecpackfull' -Source Chocolatey -AcceptLicense
-
-# Cleanup
+Install-Package 'asio4all' -Source Chocolatey -InstallArguments "/D=C:\Program Files (x86)\ASIO4ALL" -AcceptLicense
 Get-ChildItem -Path '~\Desktop' -Filter 'asio4all*.lnk' | Remove-Item
 
 # Update Chocolatey packages
