@@ -21,13 +21,16 @@ Install-WinGetPackage -Id 'Google.Chrome' -MatchOption Equals -Source winget -Mo
 # Install-WinGetPackage -Id 'Mozilla.Firefox' -MatchOption Equals -Source winget -Mode Silent
 # Install-WinGetPackage -Id 'Opera.OperaGX' -MatchOption Equals -Source winget -Mode Silent
 
+# Install Office apps
+Install-WinGetPackage -Name 'LibreOffice' -MatchOption Equals -Source winget -Mode Silent
+
 # Install Audio & Video apps
-Find-WinGetPackage -Name 'Spotify' -MatchOption Equals -Source winget | Install-WinGetPackage -Mode Silent
-Find-WinGetPackage -Id 'VideoLAN.VLC' -MatchOption Equals -Source winget | Install-WinGetPackage -Mode Silent
+Install-WinGetPackage -Name 'Spotify' -MatchOption Equals -Source winget -Mode Silent
+Install-WinGetPackage -Id 'VideoLAN.VLC' -MatchOption Equals -Source winget -Mode Silent
 
 # Install Utility apps
-Find-WinGetPackage -Id 'TreeSize.Free' -Source winget | Install-WinGetPackage -Mode Silent
-Find-WinGetPackage -Name 'WinMerge' -MatchOption Equals -Source winget | Install-WinGetPackage -Mode Silent
+Install-WinGetPackage -Id 'TreeSize.Free' -Source winget -Mode Silent
+Install-WinGetPackage -Name 'WinMerge' -MatchOption Equals -Source winget -Mode Silent
 
 # Update WinGet packages
 Get-WinGetPackage | Where-Object IsUpdateAvailable | Update-WinGetPackage -Mode Silent
