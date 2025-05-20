@@ -8,6 +8,13 @@ Install-WinGetPackage -Id 'Microsoft.Sysinternals' -Source winget -Location "C:\
 # Update specific version of Autoruns
 # Get-WinGetPackage -Id 'Microsoft.Sysinternals.Autoruns' -MatchOption Equals -Source winget | Update-WinGetPackage -Version '14.10' -Mode Silent
 
+# Install Docker & Kubernetes
+Install-WinGetPackage -Name 'Docker CLI' -MatchOption Equals -Source winget -Mode Silent
+Install-WinGetPackage -Id 'Kubernetes.minikube' -MatchOption Equals -Source winget -Mode Silent
+
+# TODO: Configure docker with minikube
+# minikube docker-env
+
 # Install Git for Windows
 $gitOptionsPath = (Resolve-Path "~\OneDrive\Settings\Git\git_options.ini").Path
 Find-WinGetPackage -Id 'Microsoft.Git' -MatchOption Equals -Source winget `
