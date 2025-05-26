@@ -23,6 +23,7 @@ Install-WinGetPackage -Id 'Google.Chrome' -MatchOption Equals -Source winget -Mo
 
 # Install Office apps
 Install-WinGetPackage -Name 'LibreOffice' -MatchOption Equals -Source winget -Mode Silent
+Get-ChildItem -Path "$env:PUBLIC\Desktop" -Filter 'LibreOffice*.lnk' | Remove-Item
 
 # Install Audio & Video apps
 Install-WinGetPackage -Name 'Spotify' -MatchOption Equals -Source winget -Mode Silent

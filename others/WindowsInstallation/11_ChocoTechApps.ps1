@@ -21,7 +21,7 @@ Install-Package 'openjdk' -Source Chocolatey -AcceptLicense
 # Audio & Video
 Install-Package 'k-litecodecpackfull' -Source Chocolatey -AcceptLicense
 Install-Package 'asio4all' -Source Chocolatey -InstallArguments "/D=C:\Program Files (x86)\ASIO4ALL" -AcceptLicense
-Get-ChildItem -Path '~\Desktop' -Filter 'asio4all*.lnk' | Remove-Item
+Get-ChildItem -Path "$env:USERPROFILE\Desktop" -Filter 'asio4all*.lnk' | Remove-Item
 
 # Update Chocolatey packages
 $updatePackagesProperties = @('Name', @{Label = 'CurrentVersion'; Expression = { $_.Version } }, @{Label = 'LatestVersion'; Expression = { (Find-Package $_.Name -Provider ChocolateyGet).Version } })
