@@ -10,6 +10,8 @@ pip install ipywidgets
 # pip install scikit-learn
 
 # pip install torch
+# pip install torchinfo
+# pip install torchsummary
 # pip install torchview
 # pip install torchaudio
 # pip install torchvision
