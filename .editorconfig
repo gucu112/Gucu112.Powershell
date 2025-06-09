@@ -9,6 +9,7 @@ insert_final_newline = true
 # Source code
 [*.{cs,ps1,psd1,psm1}]
 indent_size = 4
+dotnet_diagnostic.CA1416.severity = none
 
 # Shell scripts
 [*.sh]
