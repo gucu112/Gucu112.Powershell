@@ -1,5 +1,5 @@
 param(
-    [switch]$Force = $false
+    [switch]$Force = [switch]::NotPresent
 )
 
 Write-Verbose "Installing 'Gucu112.Powershell.Utility' required modules."

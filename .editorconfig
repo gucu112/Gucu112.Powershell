@@ -16,7 +16,7 @@ end_of_line = lf
 indent_size = 4
 
 # Xml project files
-[*.{csproj,resx,ps1xml}]
+[*.{csproj,ps1xml}]
 indent_size = 2
 
 # Data serialization
