@@ -90,13 +90,17 @@ There are no deployment procedure established yet.
 
 ## Contributing
 
-There are no contribution rules established yet.
+There are couple of contribution rules established:
+
+- Use `$PSItem` instead of `$_` in nested code blocks
+- Add `Write-Verbose` messages where necessary
+- Support `ShouldProcess` if applicable
 
 ## Versioning
 
 Modules versioning pattern is defined as follows:
 
-```
+```text
 v{A}.{b}.{yyMM}.{ddr}
 ```
 
@@ -105,7 +109,7 @@ v{A}.{b}.{yyMM}.{ddr}
 - `{A}` - major version, incrementing only when breaking changes appears, starting from 0
 - `{b}` - minor version, incrementing for each release, starting from 0 when new major version introduced
 - `{yyMM}` - 2-digits year (range from 00 to 99) with 2-digits month (range from 00 to 12)
-- `{ddr}` - 2-digits day of the month (range from 01 to 31) and revison number, incrementing for each daily version, starting from 0
+- `{ddr}` - 2-digits day of the month (range from 01 to 31) and patch number, incrementing for each daily version, starting from 0
 
 ## Authors
 
@@ -135,14 +139,48 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE.txt) 
     - Get-WindowsIdentity -LoggedIn, -Anonymous
     - ConvertFrom-SecureStringAsPlainText
     - Write-Message (?)
-- Improvements
-  - Replace `$_` with `$PSItem` for better visibility
-  - Change string to ErrorRecord for error collection list
-  - Try System.Collections.ArrayList as error collection list
-- Documentation & Tests
+    - Get-FileEncoding
+    - Set-FileEncoding
+    - Compare-SecureString
+    - Compare-PSCredential
+    - Register-ScheduledTask
+    - Unregister-ScheduledTask
+    - New-ScheduledTaskXML
+    - Merge-ScheduledTaskXML
+    - RemoveTempFiles
+- Enhancements
+  - Add `using` section to script file template
+  - Change `string` to `ErrorRecord` for error collection list
+  - Consider System.Collections.ArrayList as error collection list
+  - Check which encoding should I apply when calling `Get-Content` and `Set-Content` (set default encoding)
+- Documentation & Unit Tests
+  - New-ModuleScaffold
+  - New-ModuleFunction
   - Get-WindowsIdentity
   - Test-WindowsIdentity
 - Research
+  - Investigate how to install PowerShellGet module
+    - <https://docs.microsoft.com/en-us/powershell/scripting/gallery/installing-psget?view=powershell-5.1>
+  - Investigate following modules and functions
+    - Core (<https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.core/?view=powershell-5.1>)
+      - Get-Module
+    - PowerShellGet (<https://docs.microsoft.com/en-us/powershell/module/powershellget/?view=powershell-5.1>)
+      - Find-Module
+      - Find-Script
+      - Get-InstalledModule
+      - Get-InstalledScript
+      - Install-Script
+      - New-ScriptFileInfo
+      - Uninstall-Module
+      - Uninstall-Script
+    - PackageManagement (<https://docs.microsoft.com/en-us/powershell/module/packagemanagement/?view=powershell-5.1>)
+      - Find-Package
+      - Get-Package
+      - Uninstall-Package
+  - Investigate how multiple errors are thrown
+  - Update module manifest when calling `New-ModuleScaffold` or `New-ModuleFunction` function (current code commented out)
+  - Add and update `PrivateData.PSData.ExternalModuleDependencies` module manifest property automatically
+  - Check different root module types (see `-RootModule` parameter of New-ModuleManifest)
   - Check what will happen when we re-use function across module and Import-Module with -Prefix parameter
 
 ## Changelog
