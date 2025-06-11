@@ -13,6 +13,7 @@ pip install ipywidgets
 # pip install torchinfo
 # pip install torchsummary
 # pip install torchview
+# pip install torchtext
 # pip install torchaudio
 # pip install torchvision
 
