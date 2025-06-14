@@ -3,6 +3,8 @@ pip install jupyter
 pip install notebook
 pip install ipywidgets
 
+pip install html-to-markdown
+
 # pip install numpy
 # pip install matplot
 # pip install pandas
