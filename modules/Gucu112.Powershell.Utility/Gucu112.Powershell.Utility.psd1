@@ -12,7 +12,7 @@
 RootModule = 'Gucu112.Powershell.Utility.psm1'
 
 # Version number of this module.
-ModuleVersion = '0.1.0'
+ModuleVersion = '0.1.2506.150'
 
 # Supported PSEditions
 # CompatiblePSEditions = @()
@@ -71,9 +71,9 @@ RequiredAssemblies = @(
 
 # Modules to import as nested modules of the module specified in RootModule/ModuleToProcess
 NestedModules = @(
-    '.\src\Get-WindowsIdentity.psm1'
-    '.\src\Get-WindowsUser.psm1'
-    '.\src\Test-WindowsIdentity.psm1'
+    'src\Get-WindowsIdentity.psm1'
+    'src\Get-WindowsUser.psm1'
+    'src\Test-WindowsIdentity.psm1'
 )
 
 # Functions to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no functions to export.
