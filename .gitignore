@@ -18,3 +18,7 @@
 [Oo]ut/
 [Ll]og/
 [Ll]ogs/
+
+# Test results
+[Tt]est[Rr]esults.xml
+[Cc]overage.xml

@@ -1,4 +1,5 @@
 ﻿using namespace System.Security.Principal
+
 function Get-WindowsIdentity {
     #region Documentation
     <#
@@ -20,17 +21,13 @@ function Get-WindowsIdentity {
         [Alias('CurrentIdentity')]
         [switch]$Current = [switch]::Present,
 
-        [Parameter(ParameterSetName = 'LoggedIn')]
-        [Alias('LoggedInIdentity')]
-        [switch]$LoggedIn = [switch]::NotPresent,
-
         [Parameter(ParameterSetName = 'Anonymous')]
         [Alias('AnonymousIdentity')]
         [switch]$Anonymous = [switch]::NotPresent,
 
-        [Parameter(ParameterSetName = 'System')]
-        [Alias('SystemIdentity')]
-        [switch]$System = [switch]::NotPresent
+        [Parameter(ParameterSetName = 'Explorer')]
+        [Alias('ExplorerIdentity')]
+        [switch]$Explorer = [switch]::NotPresent
     )
     #endregion
 
@@ -42,14 +39,11 @@ function Get-WindowsIdentity {
                     $Identity = [WindowsIdentity]::GetCurrent()
                     $Current = [switch]::Present
                 }
-                'LoggedIn' {
-                    throw (New-Object NotImplementedException 'Not implemented yet.')
-                }
                 'Anonymous' {
                     $Identity = [WindowsIdentity]::GetAnonymous()
                     $Anonymous = [switch]::Present
                 }
-                'System' {
+                'Explorer' {
                     throw (New-Object NotImplementedException 'Not implemented yet.')
                 }
             }
