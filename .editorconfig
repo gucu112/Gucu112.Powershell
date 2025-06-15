@@ -5,8 +5,16 @@ charset = utf-8
 indent_style = space
 insert_final_newline = true
 
-# Source code
-[*.{cs,ps1,psd1,psm1}]
+# Markdown
+[*.md]
+indent_size = 2
+
+# PowerShell
+[*.{ps1,psd1,psm1,psc1}]
+indent_size = 4
+
+# Visual Studio
+[*.{sln,csproj,cs}]
 indent_size = 4
 dotnet_diagnostic.CA1416.severity = none
 
@@ -23,12 +31,8 @@ indent_size = 2
 [*.{json,yaml,yml}]
 indent_size = 2
 
-# Markdown
-[*.md]
-indent_size = 2
-
 # Xml files
-[*.{resx,ruleset,stylecop,xml,xsd,xsl}]
+[*.{resx,ruleset,stylecop,clixml,xml,xsd,xsl}]
 indent_size = 2
 
 # Xml config files

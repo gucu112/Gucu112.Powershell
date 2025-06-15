@@ -17,7 +17,6 @@
 # VisualStudio files with CRLF line endings
 *.sln     text  eol=crlf
 *.csproj  text  eol=crlf
-*.pshproj text  eol=crlf
 *.cs      text  eol=crlf
 *.xml     text  eol=crlf
 *.txt     text  eol=crlf
