@@ -1,11 +1,22 @@
+using namespace System.Security.Principal
+
 Describe "Test-WindowsIdentity" {
     BeforeAll {
-        $modulePath = Join-Path $PSScriptRoot '..\src\Test-WindowsIdentity.psm1'
-        Import-Module $modulePath
+        Import-Module (Join-Path $PSScriptRoot '..\src\Get-WindowsIdentity.psm1')
+        Import-Module (Join-Path $PSScriptRoot '..\src\Test-WindowsIdentity.psm1')
     }
 
     AfterAll {
         Remove-Module 'Test-WindowsIdentity' -Force
+        Remove-Module 'Get-WindowsIdentity' -Force
+    }
+
+    It "does have proper parameters" {
+        Get-Command Test-WindowsIdentity | Should -HaveParameter Identity -Type ([WindowsIdentity])
+        Get-Command Test-WindowsIdentity | Should -HaveParameter Role -Type ([WindowsBuiltInRole])
+        Get-Command Test-WindowsIdentity | Should -HaveParameter Administrator -Type ([switch])
+        Get-Command Test-WindowsIdentity | Should -HaveParameter User -Type ([switch])
+        Get-Command Test-WindowsIdentity | Should -HaveParameter Guest -Type ([switch])
     }
 
     Context "unit tests" {
@@ -26,7 +37,11 @@ Describe "Test-WindowsIdentity" {
 
     Context "e2e tests" {
         It "works" {
-            # test
+            $scriptBlock = { Test-WindowsIdentity }
+
+            $returnValue = Invoke-Command $scriptBlock
+
+            $returnValue | Should -BeIn @($true, $false)
         }
     }
 }

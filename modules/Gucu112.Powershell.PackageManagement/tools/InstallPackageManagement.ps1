@@ -33,7 +33,7 @@ Add-PackageProvider -Name 'PowerShellGet' -Force:$Force -ErrorAction Stop | Sele
 Add-PackageSource -Name 'PSGallery' -ProviderName 'PowerShellGet' -Location 'https://www.powershellgallery.com/api/v2' -Trusted -Force:$Force -ErrorAction Stop
 
 # Install-Module
-Install-Module -Name 'Pester' -Force:$Force
+Install-Module -Name 'Pester' -Force:$Force -SkipPublisherCheck
 
 ###
 # NuGet

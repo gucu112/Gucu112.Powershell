@@ -138,7 +138,6 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE.txt) 
     - Get-DnsDomain, Get-DnsHostEntry
     - Get-Path -Absolute
     - Resolve-Path -SkipValidate
-    - Get-WindowsIdentity -LoggedIn, -Anonymous
     - ConvertFrom-SecureStringAsPlainText
     - Write-Message (?)
     - Get-FileEncoding
