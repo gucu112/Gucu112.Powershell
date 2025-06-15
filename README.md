@@ -158,12 +158,11 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE.txt) 
   - Get-WindowsIdentity
   - Test-WindowsIdentity
 - Research
-  - Investigate how to install PowerShellGet module
-    - <https://docs.microsoft.com/en-us/powershell/scripting/gallery/installing-psget?view=powershell-5.1>
+  - Investigate how to [install PowerShellGet](https://docs.microsoft.com/en-us/powershell/scripting/gallery/installing-psget?view=powershell-5.1) module
   - Investigate following modules and functions
-    - Core (<https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.core/?view=powershell-5.1>)
+    - [Core](https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.core/?view=powershell-5.1)
       - Get-Module
-    - PowerShellGet (<https://docs.microsoft.com/en-us/powershell/module/powershellget/?view=powershell-5.1>)
+    - [PowerShellGet](https://docs.microsoft.com/en-us/powershell/module/powershellget/?view=powershell-5.1)
       - Find-Module
       - Find-Script
       - Get-InstalledModule
@@ -172,7 +171,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE.txt) 
       - New-ScriptFileInfo
       - Uninstall-Module
       - Uninstall-Script
-    - PackageManagement (<https://docs.microsoft.com/en-us/powershell/module/packagemanagement/?view=powershell-5.1>)
+    - [PackageManagement](https://docs.microsoft.com/en-us/powershell/module/packagemanagement/?view=powershell-5.1)
       - Find-Package
       - Get-Package
       - Uninstall-Package
