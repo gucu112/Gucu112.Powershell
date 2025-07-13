@@ -57,7 +57,8 @@ RequiredModules = @(
 
 # Assemblies that must be loaded prior to importing this module
 RequiredAssemblies = @(
-    'System.Security.Principal.dll'
+    'lib\System.Security.Principal.Windows.dll',
+    'lib\Gucu112.Powershell.Utility.dll'
 )
 
 # Script files (.ps1) that are run in the caller's environment prior to importing this module.
