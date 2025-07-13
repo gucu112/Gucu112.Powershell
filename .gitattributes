@@ -21,6 +21,10 @@
 *.xml     text  eol=crlf
 *.txt     text  eol=crlf
 
+# Windows files with CRLF line endings
+*.bat     text  eol=crlf
+*.cmd     text  eol=crlf
+
 # Binary files
 *.dll binary
 *.exe binary
