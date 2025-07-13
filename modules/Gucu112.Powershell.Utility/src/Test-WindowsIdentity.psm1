@@ -1,4 +1,5 @@
 ﻿using namespace System.Security.Principal
+
 function Test-WindowsIdentity {
     #region Documentation
     <#
