@@ -1,4 +1,4 @@
-﻿function Add-PackageProvider {
+function Add-PackageProvider {
     #region Documentation
     <#
     No documentation yet.
@@ -31,6 +31,7 @@
     process {
         if ($Force.IsPresent -or (-not (Get-PackageProvider -Name $ProviderName -ErrorAction Ignore))) {
             if ($ProviderName -eq 'PowerShellGet') {
+                # TODO: Get version parameter from package provider map?
                 Install-Module 'PowerShellGet' -AllowClobber -Force:$Force -ErrorAction $ErrorAction
             }
 

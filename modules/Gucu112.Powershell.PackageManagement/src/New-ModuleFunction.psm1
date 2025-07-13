@@ -43,45 +43,32 @@ function New-ModuleFunction {
 
         $regularFileTemplate = Get-Content -Path (Join-Path $PSScriptRoot '..\data\FunctionFile.template')
 
-        $functionCollection = $Name | ForEach-Object {
-            $filePath = Join-Path $basePath "$_.psm1"
-
-            if (Test-Path $filePath) {
-                $errorCollection.Add("A function with the name $_ already exists in '$moduleName' module.")
-                return
-            }
-
-            [PSCustomObject]@{
-                Name = $_
-                Path = $filePath
-            }
+        if ($TestFile.IsPresent) {
+            $testFileTemplate = Get-Content -Path (Join-Path $PSScriptRoot '..\data\FunctionTestFile.template')
         }
-
-        $fileTemplate = Get-Content -Path (Join-Path $PSScriptRoot '..\data\NewFunction.template')
 
         $beginBlock = "{`n"
         $processBlock = "{`n    `n    }"
         $endBlock = "{`n"
 
         if ($ErrorHandling.IsPresent) {
-            $beginBlock += @'
+            $beginBlock = @'
         $ErrorAction = $PSCmdlet.MyInvocation.BoundParameters.ErrorAction
         if ($null -eq $ErrorAction) {
             $ErrorAction = $ErrorActionPreference
         }
 
-        # TODO: Change string to ErrorRecord for error collection list
-        $errorCollection = New-Object System.Collections.Generic.List[string]
+        $errorCollection = New-Object List[ErrorRecord]
 '@
 
-            $endBlock += @'
+            $endBlock = @'
         if ($errorCollection.Count -gt 0) {
-            foreach ($message in $errorCollection) {
-                Write-Error $message
+            foreach ($errorRecord in $errorCollection | Select-Object -SkipLast 1) {
+                Write-Error $errorRecord
+                # TODO: Extract exception and inner exception if necessary
             }
-            exit 1
+            throw $errorCollection | Select-Object -Last 1
         }
-        exit 0
 '@
         }
 
