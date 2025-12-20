@@ -1,10 +1,13 @@
 Describe "New-ModuleFunction" {
     BeforeAll {
+        $utilityModulePath = Join-Path $PSScriptRoot '..\..\Gucu112.Powershell.Utility'
+        Import-Module (Join-Path $utilityModulePath 'Gucu112.Powershell.Utility.psd1')
         Import-Module (Join-Path $PSScriptRoot '..\src\New-ModuleFunction.psm1')
         Import-Module (Join-Path $PSScriptRoot '..\src\New-ModuleScaffold.psm1')
     }
 
     AfterAll {
+        Remove-Module 'Gucu112.Powershell.Utility' -Force
         Remove-Module 'New-ModuleFunction' -Force
         Remove-Module 'New-ModuleScaffold' -Force
     }
@@ -78,7 +81,7 @@ Describe "New-ModuleFunction" {
             }
 
             AfterAll {
-                Remove-Item -Path $singleModulePath -Recurse -Force
+                Remove-Item -Path $singleModulePath -Recurse -Force -ErrorAction Ignore | Out-Null
             }
 
             It "works" {
