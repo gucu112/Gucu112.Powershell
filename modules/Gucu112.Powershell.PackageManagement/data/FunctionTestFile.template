@@ -1,0 +1,51 @@
+Describe "{{FunctionName}}" {
+    BeforeAll {
+        Import-Module (Join-Path $PSScriptRoot '..\src\{{FunctionName}}.psm1')
+    }
+
+    AfterAll {
+        Remove-Module '{{FunctionName}}' -Force
+    }
+
+    It "does have proper parameters" {
+        Get-Command {{FunctionName}} | Should -Not -HaveParameter Test -Type ([string])
+    }
+
+    Context "unit tests" {
+        BeforeEach {
+            Mock {{FunctionName}} {}
+        }
+
+        It "works" {
+            $scriptBlock = { {{FunctionName}} }
+
+            $scriptBlock | Should -Not -Throw
+
+            Should -Invoke {{FunctionName}} -Times 1
+        }
+
+        It "does not work" {
+            $scriptBlock = { {{FunctionName}} -NotExisting }
+
+            $scriptBlock | Should -Throw "A parameter cannot be found that matches parameter name 'NotExisting'."
+
+            Should -Invoke {{FunctionName}} -Times 0
+        }
+    }
+
+    Context "e2e tests" {
+        It "works" {
+            $scriptBlock = { {{FunctionName}} }
+
+            $returnValue = Invoke-Command $scriptBlock
+
+            $returnValue | Should -BeTrue
+        }
+
+        It "does not work" {
+            $scriptBlock = { {{FunctionName}} }
+
+            $scriptBlock | Should -Throw
+        }
+    }
+}

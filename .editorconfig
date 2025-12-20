@@ -1,0 +1,43 @@
+root = true
+
+[*]
+charset = utf-8
+indent_style = space
+insert_final_newline = true
+
+# Markdown
+[*.md]
+indent_size = 2
+
+# PowerShell
+[*.{ps1,psd1,psm1,psc1,ps1xml,clixml}]
+end_of_line = crlf
+indent_size = 4
+
+# Visual Studio
+[*.{sln,csproj,cs}]
+end_of_line = crlf
+indent_size = 4
+dotnet_diagnostic.CA1416.severity = none
+
+# Windows scripts
+[*.{bat,cmd}]
+end_of_line = crlf
+indent_size = 4
+
+# Shell scripts
+[*.sh]
+end_of_line = lf
+indent_size = 4
+
+# Data serialization
+[*.{json,yaml,yml}]
+indent_size = 2
+
+# Xml files
+[*.{resx,ruleset,stylecop,xml,xsd,xsl}]
+indent_size = 2
+
+# Xml config files
+[*.{props,targets,config,nuspec}]
+indent_size = 2

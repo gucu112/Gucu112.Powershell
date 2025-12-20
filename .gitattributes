@@ -1,0 +1,30 @@
+* text=auto
+
+# Default files with LF line endings
+*.md            text
+*.gitattributes text
+
+# PowerShell files with CRLF line endings
+*.ps1    text  eol=crlf
+*.psm1   text  eol=crlf
+*.psd1   text  eol=crlf
+*.psc1   text  eol=crlf
+*.ps1xml text  eol=crlf
+*.clixml text  eol=crlf
+*.xml    text  eol=crlf
+*.txt    text  eol=crlf
+
+# VisualStudio files with CRLF line endings
+*.sln     text  eol=crlf
+*.csproj  text  eol=crlf
+*.cs      text  eol=crlf
+*.xml     text  eol=crlf
+*.txt     text  eol=crlf
+
+# Windows files with CRLF line endings
+*.bat     text  eol=crlf
+*.cmd     text  eol=crlf
+
+# Binary files
+*.dll binary
+*.exe binary

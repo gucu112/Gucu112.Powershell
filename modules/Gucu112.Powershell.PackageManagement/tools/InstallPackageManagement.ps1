@@ -24,6 +24,8 @@ Get-PSRepository -Name 'PSGallery'
 # PowerShellGet
 ###
 
+# TODO: Investigate how to unload/remove 'PackageManagement' and 'PowerShellGet' modules before update/install 'PowerShellGet' module
+
 # Add-PSPackageProvider
 Add-PackageProvider -Name 'PowerShellGet' -Force:$Force -ErrorAction Stop | Select-Object -Property $packageProviderProperties
 
@@ -31,7 +33,7 @@ Add-PackageProvider -Name 'PowerShellGet' -Force:$Force -ErrorAction Stop | Sele
 Add-PackageSource -Name 'PSGallery' -ProviderName 'PowerShellGet' -Location 'https://www.powershellgallery.com/api/v2' -Trusted -Force:$Force -ErrorAction Stop
 
 # Install-Module
-Install-Module -Name 'Pester' -Force:$Force
+Install-Module -Name 'Pester' -Force:$Force -SkipPublisherCheck
 
 ###
 # NuGet
@@ -65,3 +67,5 @@ Get-PackageSource | Format-Table
 
 # Invoke-Pester
 (Get-PackageSource).Count | Should -Be 3
+
+# TODO: Check also if all package sources are trusted

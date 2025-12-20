@@ -1,4 +1,4 @@
-﻿. (Join-Path $PSScriptRoot '00_Common.ps1')
+. (Join-Path $PSScriptRoot '00_Common.ps1')
 
 # System -> Display -> Ease cursor movement between displays
 # TODO

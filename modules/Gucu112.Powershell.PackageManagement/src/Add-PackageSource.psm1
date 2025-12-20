@@ -20,10 +20,10 @@ function Add-PackageSource {
         [string]$Location,
 
         [Parameter()]
-        [switch]$Trusted = $false,
+        [switch]$Trusted = [switch]::NotPresent,
 
         [Parameter()]
-        [switch]$Force = $false
+        [switch]$Force = [switch]::NotPresent
     )
     #endregion
 
@@ -34,9 +34,8 @@ function Add-PackageSource {
             $ErrorAction = $ErrorActionPreference
         }
 
-        $providerVersionMap = $PSCmdlet.MyInvocation.MyCommand.Module.PrivateData.Configuration.PackageProviderVersionMap
-
         if ($Force.IsPresent -or (-not (Get-PackageProvider -Name $ProviderName -ListAvailable -ErrorAction Ignore))) {
+            $providerVersionMap = $PSCmdlet.MyInvocation.MyCommand.Module.PrivateData.Configuration.PackageProviderVersionMap
             Import-PackageProvider -Name $ProviderName -MinimumVersion $providerVersionMap[$ProviderName] -Force:$Force -ErrorAction Stop | Out-Null
         }
     }

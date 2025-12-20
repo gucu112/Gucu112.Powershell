@@ -1,0 +1,11 @@
+@{
+    # RootModule = ''
+    ModuleVersion = '{{Version}}'
+    GUID = '{{NewGuid}}'
+    Author = '{{Author}}'
+    CompanyName = '{{Company}}'
+    Copyright = '{{Copyright}}'
+    Description = '{{Description}}'
+    PowerShellVersion = '{{PSVersion}}'
+    ScriptsToProcess = @({{ScriptsToProcess}})
+}
