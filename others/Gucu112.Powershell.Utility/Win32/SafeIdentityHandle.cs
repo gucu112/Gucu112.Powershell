@@ -11,7 +11,7 @@ namespace Gucu112.Powershell.Utility.Win32
         {
         }
 
-        public SafeIdentityHandle(IntPtr handle, bool ownHandle = true) : base(ownHandle)
+        public SafeIdentityHandle(IntPtr handle, bool ownHandle = false) : base(ownHandle)
         {
             this.SetHandle(handle);
         }

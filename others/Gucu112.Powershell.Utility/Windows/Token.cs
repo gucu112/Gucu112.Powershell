@@ -90,7 +90,7 @@ namespace Gucu112.Powershell.Utility.Windows
                 throw new Win32Exception(Marshal.GetLastWin32Error(), "Cannot open process token.");
             }
 
-            referenceTokenHandle = new SafeIdentityHandle(referenceTokenHandlePtr, false);
+            referenceTokenHandle = new SafeIdentityHandle(referenceTokenHandlePtr);
             return this;
         }
 
@@ -124,7 +124,7 @@ namespace Gucu112.Powershell.Utility.Windows
                 throw new Win32Exception(Marshal.GetLastWin32Error(), "Cannot duplicate token.");
             }
 
-            duplicateTokenHandle = new SafeIdentityHandle(duplicateTokenHandlePtr, false);
+            duplicateTokenHandle = new SafeIdentityHandle(duplicateTokenHandlePtr);
             return this;
         }
 
@@ -135,7 +135,7 @@ namespace Gucu112.Powershell.Utility.Windows
             TokenType tokenType = TokenType.TokenPrimary
         )
         {
-            using (SafeIdentityHandle tokenAttributes = new(IntPtr.Zero))
+            using (SafeIdentityHandle tokenAttributes = new())
             {
                 if (!DuplicateTokenEx(referenceTokenHandle, tokenAccess, tokenAttributes, impersonationLevel, tokenType, out duplicateTokenHandle))
                 {
@@ -149,8 +149,8 @@ namespace Gucu112.Powershell.Utility.Windows
         public void Dispose()
         {
             processHandle.Dispose();
-            referenceTokenHandle.Dispose();
-            duplicateTokenHandle.Dispose();
+            referenceTokenHandle?.Dispose();
+            duplicateTokenHandle?.Dispose();
         }
         #endregion
     }
