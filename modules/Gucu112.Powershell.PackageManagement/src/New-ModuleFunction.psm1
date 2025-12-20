@@ -14,13 +14,11 @@ function New-ModuleFunction {
     param(
         [Parameter(Mandatory)]
         [Alias('ModulePath', 'ModuleBasePath')]
-        # TODO: Consider custom validator
         [ValidateNotNullOrEmpty()]
         [string]$Path,
 
         [Parameter(Mandatory, ValueFromPipeline)]
         [Alias('FunctionName')]
-        # TODO: Consider custom validator
         [ValidateNotNullOrEmpty()]
         [string[]]$Name,
 
@@ -66,7 +64,6 @@ function New-ModuleFunction {
         if ($errorCollection.Count -gt 0) {
             foreach ($errorRecord in $errorCollection | Select-Object -SkipLast 1) {
                 Write-Error $errorRecord
-                # TODO: Extract exception and inner exception if necessary
             }
             throw $errorCollection | Select-Object -Last 1
         }

@@ -1,3 +1,5 @@
+using namespace System.Management.Automation
+
 $FileFoundExceptionClass = @'
 namespace System.IO {
     public class FileFoundException : IOException
@@ -25,3 +27,19 @@ namespace System.IO {
 
 Write-Verbose 'Adding "System.IO.DirectoryFoundException" type.'
 Add-Type -TypeDefinition $DirectoryFoundExceptionClass -Language CSharp
+
+class ValidatePathExists : ValidateArgumentsAttribute
+{
+    [void] Validate([object]$arguments, [EngineIntrinsics]$engineIntrinsics)
+    {
+        $path = $arguments
+        if ([string]::IsNullOrWhiteSpace($path))
+        {
+            throw [System.ArgumentNullException]::new()
+        }
+        if (-not (Test-Path -Path $path))
+        {
+            throw [System.IO.FileNotFoundException]::new()
+        }
+    }
+}

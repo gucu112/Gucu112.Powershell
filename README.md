@@ -92,6 +92,7 @@ There are no deployment procedure established yet.
 
 There are couple of contribution rules established:
 
+- Left blank line after `using` and before `function`
 - Use `$PSItem` instead of `$_` in nested code blocks
 - Add `Write-Verbose` messages where necessary
 - Support `ShouldProcess` if applicable
@@ -124,6 +125,17 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE.txt) 
 ## Ideas
 
 - Create kanban board
+- Documentation & Unit + E2E Tests
+  - New-ModuleScaffold
+  - New-ModuleFunction
+  - Get-WindowsIdentity
+  - Test-WindowsIdentity
+- Enhancements
+  - Consider System.Collections.ArrayList as error collection list
+  - Update module manifest when calling `New-ModuleScaffold` or `New-ModuleFunction` function (current code commented out)
+  - Add and update `PrivateData.PSData.ExternalModuleDependencies` module manifest property automatically
+  - Check different root module types (see `-RootModule` parameter of New-ModuleManifest)
+  - Check what will happen when we re-use function across module and Import-Module with -Prefix parameter
 - Functions
   - Package Management
     - New-ScriptFile (use New-ScriptFileInfo)
@@ -147,16 +159,6 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE.txt) 
     - New-ScheduledTaskXML
     - Merge-ScheduledTaskXML
     - RemoveTempFiles
-- Enhancements
-  - Add `using` section to script file template
-  - Change `string` to `ErrorRecord` for error collection list
-  - Consider System.Collections.ArrayList as error collection list
-  - Check which encoding should I apply when calling `Get-Content` and `Set-Content` (set default encoding)
-- Documentation & Unit Tests
-  - New-ModuleScaffold
-  - New-ModuleFunction
-  - Get-WindowsIdentity
-  - Test-WindowsIdentity
 - Research
   - Investigate how to [install PowerShellGet](https://docs.microsoft.com/en-us/powershell/scripting/gallery/installing-psget?view=powershell-5.1) module
   - Investigate following modules and functions
@@ -175,11 +177,6 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE.txt) 
       - Find-Package
       - Get-Package
       - Uninstall-Package
-  - Investigate how multiple errors are thrown
-  - Update module manifest when calling `New-ModuleScaffold` or `New-ModuleFunction` function (current code commented out)
-  - Add and update `PrivateData.PSData.ExternalModuleDependencies` module manifest property automatically
-  - Check different root module types (see `-RootModule` parameter of New-ModuleManifest)
-  - Check what will happen when we re-use function across module and Import-Module with -Prefix parameter
 
 ## Changelog
 
