@@ -34,9 +34,8 @@ function Add-PackageSource {
             $ErrorAction = $ErrorActionPreference
         }
 
-        $providerVersionMap = $PSCmdlet.MyInvocation.MyCommand.Module.PrivateData.Configuration.PackageProviderVersionMap
-
         if ($Force.IsPresent -or (-not (Get-PackageProvider -Name $ProviderName -ListAvailable -ErrorAction Ignore))) {
+            $providerVersionMap = $PSCmdlet.MyInvocation.MyCommand.Module.PrivateData.Configuration.PackageProviderVersionMap
             Import-PackageProvider -Name $ProviderName -MinimumVersion $providerVersionMap[$ProviderName] -Force:$Force -ErrorAction Stop | Out-Null
         }
     }

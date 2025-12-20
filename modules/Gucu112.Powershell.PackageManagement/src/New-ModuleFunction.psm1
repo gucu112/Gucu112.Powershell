@@ -109,7 +109,7 @@ function New-ModuleFunction {
                 $fileContent | Set-Content -Path $PSItem.Path -Encoding UTF8
             }
 
-            $testFilePath = Join-Path $basePath ".\tests\$functionName.Tests.ps1"
+            $testFilePath = Join-Path $basePath ".\tests\$($PSItem.Name).Tests.ps1"
             if ($TestFile.IsPresent -and $PSCmdlet.ShouldProcess($testFilePath, 'New-ModuleFunctionTestFile')) {
                 New-Item -Path $testFilePath -ItemType File | Out-Null
 

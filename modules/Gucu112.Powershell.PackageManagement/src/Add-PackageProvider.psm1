@@ -30,12 +30,13 @@ function Add-PackageProvider {
     #region Process
     process {
         if ($Force.IsPresent -or (-not (Get-PackageProvider -Name $ProviderName -ErrorAction Ignore))) {
+            $providerVersionMap = $PSCmdlet.MyInvocation.MyCommand.Module.PrivateData.Configuration.PackageProviderVersionMap
+
             if ($ProviderName -eq 'PowerShellGet') {
-                # TODO: Get version parameter from package provider map?
-                Install-Module 'PowerShellGet' -AllowClobber -Force:$Force -ErrorAction $ErrorAction
+                Install-Module 'PowerShellGet' -MinimumVersion $providerVersionMap[$ProviderName] -AllowClobber -Force:$Force -ErrorAction $ErrorAction
             }
 
-            Install-PackageProvider -Name $ProviderName -Force:$Force -ErrorAction $ErrorAction
+            Install-PackageProvider -Name $ProviderName -MinimumVersion $providerVersionMap[$ProviderName] -Force:$Force -ErrorAction $ErrorAction
         }
     }
     #endregion

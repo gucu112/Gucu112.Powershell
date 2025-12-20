@@ -78,6 +78,7 @@ Describe "New-ModuleScaffold" {
             }
 
             It "works" {
+                $dateFormat = (Get-Culture).DateTimeFormat.ShortDatePattern
                 $scriptBlock = { New-ModuleScaffold $singleModulePath -Version 1.0.1 }
 
                 $null = Invoke-Command $scriptBlock
@@ -87,7 +88,7 @@ Describe "New-ModuleScaffold" {
                 { Test-ModuleManifest -Path $moduleManifestPath } | Should -Not -Throw
 
                 $moduleManifestPath | Should -FileContentMatch ([regex]::Escape("Module manifest for module 'Test'"))
-                $moduleManifestPath | Should -FileContentMatch ([regex]::Escape("Generated on: $(Get-Date -Format 'yyyy-MM-dd')"))
+                $moduleManifestPath | Should -FileContentMatch ([regex]::Escape("Generated on: $(Get-Date -Format $dateFormat)"))
                 $moduleManifestPath | Should -FileContentMatch ([regex]::Escape("RootModule = 'Test.psm1'"))
                 $moduleManifestPath | Should -FileContentMatch ([regex]::Escape("Version = '1.0.1'"))
                 $moduleManifestPath | Should -FileContentMatch ([regex]::Escape("PowerShellVersion = '$currentPSVersion'"))
@@ -125,6 +126,7 @@ Describe "New-ModuleScaffold" {
             }
 
             It "works" {
+                $dateFormat = (Get-Culture).DateTimeFormat.ShortDatePattern
                 $scriptBlock = { $multipleModulePath | New-ModuleScaffold -Version 1.0.3 -PassThru }
 
                 $returnValue = Invoke-Command $scriptBlock
@@ -137,7 +139,7 @@ Describe "New-ModuleScaffold" {
                     $moduleManifestPath = Join-Path $modulePath "$moduleName.psd1"
 
                     $moduleManifestPath | Should -FileContentMatch ([regex]::Escape("Module manifest for module '$moduleName'"))
-                    $moduleManifestPath | Should -FileContentMatch ([regex]::Escape("Generated on: $(Get-Date -Format 'yyyy-MM-dd')"))
+                    $moduleManifestPath | Should -FileContentMatch ([regex]::Escape("Generated on: $(Get-Date -Format $dateFormat)"))
                     $moduleManifestPath | Should -FileContentMatch ([regex]::Escape("RootModule = '$moduleName.psm1'"))
                     $moduleManifestPath | Should -FileContentMatch ([regex]::Escape("Version = '1.0.3'"))
                     $moduleManifestPath | Should -FileContentMatch ([regex]::Escape("PowerShellVersion = '$currentPSVersion'"))
