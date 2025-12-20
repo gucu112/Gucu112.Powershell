@@ -12,7 +12,7 @@
 RootModule = 'Gucu112.Powershell.Utility.psm1'
 
 # Version number of this module.
-ModuleVersion = '0.1.2506.150'
+ModuleVersion = '0.1.2512.200'
 
 # Supported PSEditions
 # CompatiblePSEditions = @()
