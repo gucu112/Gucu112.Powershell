@@ -116,7 +116,7 @@ v{A}.{b}.{yyMM}.{ddr}
 
 - **Bartlomiej Roszczypala** - [Gucu112](https://github.com/gucu112)
 
-See also the list of [contributors](https://github.com/gucu112/CSharpAutomation/contributors) who participated in this project.
+See also the list of [contributors](https://github.com/gucu112/Gucu112.Powershell/contributors) who participated in this project.
 
 ## License
 
