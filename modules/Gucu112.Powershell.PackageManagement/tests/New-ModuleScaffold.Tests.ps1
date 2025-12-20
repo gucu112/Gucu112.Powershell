@@ -1,11 +1,14 @@
 Describe "New-ModuleScaffold" {
     BeforeAll {
+        $utilityModulePath = Join-Path $PSScriptRoot '..\..\Gucu112.Powershell.Utility'
+        Import-Module (Join-Path $utilityModulePath 'Gucu112.Powershell.Utility.psd1')
         Import-Module (Join-Path $PSScriptRoot '..\src\New-ModuleScaffold.psm1')
 
         $script:currentPSVersion = "$($PSVersionTable.PSVersion.Major).$($PSVersionTable.PSVersion.Minor)"
     }
 
     AfterAll {
+        Remove-Module 'Gucu112.Powershell.Utility' -Force
         Remove-Module 'New-ModuleScaffold' -Force
     }
 

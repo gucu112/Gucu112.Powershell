@@ -1,4 +1,5 @@
-﻿using namespace System.Security.Principal
+﻿using namespace Gucu112.Powershell.Utility.Windows
+using namespace System.Security.Principal
 
 function Get-WindowsIdentity {
     #region Documentation
@@ -10,11 +11,10 @@ function Get-WindowsIdentity {
 
     #region Parameters
     [CmdletBinding(DefaultParameterSetName = 'Current', SupportsShouldProcess)]
-    [OutputType([System.Security.Principal.WindowsIdentity])]
+    [OutputType([WindowsIdentity])]
     param(
         [Parameter(ParameterSetName = 'WindowsIdentity')]
         [Alias('WindowsIdentity')]
-        [ValidateNotNull()]
         [WindowsIdentity]$Identity,
 
         [Parameter(ParameterSetName = 'Current')]
@@ -33,30 +33,31 @@ function Get-WindowsIdentity {
 
     #region Begin
     begin {
-        if ($PSCmdlet.ShouldProcess('$Identity', 'Set-WindowsIdentity')) {
-            switch ($PSCmdlet.ParameterSetName) {
-                'Current' {
-                    $Identity = [WindowsIdentity]::GetCurrent()
-                    $Current = [switch]::Present
-                }
-                'Anonymous' {
-                    $Identity = [WindowsIdentity]::GetAnonymous()
-                    $Anonymous = [switch]::Present
-                }
-                'Explorer' {
-                    throw (New-Object NotImplementedException 'Not implemented yet.')
-                }
+        switch ($PSCmdlet.ParameterSetName) {
+            'Current' {
+                $Token = New-Object Token ([Process]::GetCurrent())
+                $Current = [switch]::Present
+            }
+            'Anonymous' {
+                $Identity = [WindowsIdentity]::GetAnonymous()
+                $Current = [switch]::NotPresent
+                $Anonymous = [switch]::Present
+            }
+            'Explorer' {
+                $Token = New-Object Token ([Process]::GetExplorer())
+                $Current = [switch]::NotPresent
+                $Explorer = [switch]::Present
             }
         }
 
-        if (-not $Anonymous.IsPresent) {
-            if ($PSCmdlet.ShouldProcess('$Identity.Token', 'New-WindowsIdentity')) {
-                New-Object WindowsIdentity $Identity.Token
+        if ($null -eq $Identity) {
+            if ($PSCmdlet.ShouldProcess('$Identity', 'Set-WindowsIdentity')) {
+                $Identity = $Token.GetWindowsIdentity()
             }
-        } else {
-            if ($PSCmdlet.ShouldProcess('$Identity')) {
-                $Identity
-            }
+        }
+
+        if ($PSCmdlet.ShouldProcess('$Identity', 'Get-WindowsIdentity')) {
+            $Identity
         }
     }
     #endregion

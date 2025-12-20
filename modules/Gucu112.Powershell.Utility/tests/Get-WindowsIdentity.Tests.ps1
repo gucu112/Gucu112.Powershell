@@ -2,11 +2,13 @@ using namespace System.Security.Principal
 
 Describe "Get-WindowsIdentity" {
     BeforeAll {
+        Import-Module (Join-Path $PSScriptRoot '..\lib\Gucu112.Powershell.Utility.dll')
         Import-Module (Join-Path $PSScriptRoot '..\src\Get-WindowsIdentity.psm1')
     }
 
     AfterAll {
-        Remove-Module 'Get-WindowsIdentity' -Force
+        Remove-Module 'Gucu112.Powershell.Utility' -Force -ErrorAction Ignore
+        Remove-Module 'Get-WindowsIdentity' -Force -ErrorAction Ignore
     }
 
     It "does have proper parameters" {

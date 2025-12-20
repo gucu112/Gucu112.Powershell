@@ -20,11 +20,10 @@ function New-ModuleScaffold {
         [Alias('ModuleVersion', 'RequiredVersion')]
         [version]$Version = '0.1.0',
 
-        # TODO: Use function from Utility module instead - (Get-WindowsUser).Name
         [Parameter()]
         [Alias('ModuleAuthor')]
         [ValidateNotNullOrEmpty()]
-        [string]$Author = ((Get-CimInstance Win32_ComputerSystem).UserName -split '\\', 2 | Select-Object -Last 1),
+        [string]$Author = (Get-WindowsUser).Name,
 
         [Parameter()]
         [Alias('CompanyName')]

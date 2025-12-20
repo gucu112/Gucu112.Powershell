@@ -2,11 +2,13 @@ using namespace System.Security.Principal
 
 Describe "Test-WindowsIdentity" {
     BeforeAll {
+        Import-Module (Join-Path $PSScriptRoot '..\lib\Gucu112.Powershell.Utility.dll')
         Import-Module (Join-Path $PSScriptRoot '..\src\Get-WindowsIdentity.psm1')
         Import-Module (Join-Path $PSScriptRoot '..\src\Test-WindowsIdentity.psm1')
     }
 
     AfterAll {
+        Remove-Module 'Gucu112.Powershell.Utility' -Force
         Remove-Module 'Test-WindowsIdentity' -Force
         Remove-Module 'Get-WindowsIdentity' -Force
     }

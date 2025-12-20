@@ -54,7 +54,8 @@ function Test-WindowsIdentity {
         }
 
         if ($PSCmdlet.ShouldProcess('$Identity, $Role', 'Test-WindowsRole')) {
-            (New-Object WindowsPrincipal $Identity).IsInRole($Role)
+            $Principal = New-Object WindowsPrincipal $Identity
+            $Principal.IsInRole($Role)
         }
     }
     #endregion
