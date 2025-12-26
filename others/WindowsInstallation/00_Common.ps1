@@ -13,21 +13,25 @@ function Test-ItemProperty {
 
         # [Parameter()]
         # [string]
+        # $PropertyType,
+
+        # [Parameter()]
+        # [string]
         # $Value
     )
 
-    if (-not (Test-Path -Path $Path -PathType Container)) {
+    $isContainer = Test-Path -Path $Path -PathType Container
+    if (-not $isContainer) {
         return $false
     }
 
-    $props = Get-ItemProperty -Path $Path
-    if (-not $props) {
+    $itemProperties = Get-ItemProperty -Path $Path
+    if (-not $itemProperties) {
         return $false
     }
 
-    $member = $props | Get-Member -Name $Name
-    if (-not $member)
-    {
+    $objectMembers = $itemProperties | Get-Member -Name $Name
+    if (-not $objectMembers) {
         return $false
     }
 

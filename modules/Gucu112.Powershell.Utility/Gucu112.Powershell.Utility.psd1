@@ -74,6 +74,7 @@ RequiredAssemblies = @(
 NestedModules = @(
     'src\Get-WindowsIdentity.psm1'
     'src\Get-WindowsUser.psm1'
+    'src\Test-ItemProperty.psm1'
     'src\Test-WindowsIdentity.psm1'
 )
 
@@ -82,6 +83,7 @@ FunctionsToExport = @(
     # Gucu112.Powershell.Utility
     'Get-WindowsIdentity'
     'Get-WindowsUser'
+    'Test-ItemProperty'
     'Test-WindowsIdentity'
     # BetterTls
     'Disable-Tls'
