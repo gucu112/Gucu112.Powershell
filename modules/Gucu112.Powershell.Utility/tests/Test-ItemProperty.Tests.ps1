@@ -4,15 +4,22 @@ Describe "Test-ItemProperty" {
 
         $script:HKCU_Environment = "HKCU:\Environment"
         $script:HKCU_Software = "HKCU:\Software"
+        $script:TestRegistry_Network = "TestRegistry:\Network"
+
+        New-Item -Path $script:TestRegistry_Network -Type "Container" -Force | Out-Null
+        New-ItemProperty -Path $script:TestRegistry_Network -Name "Channel" -Value 10
     }
 
     AfterAll {
-        Remove-Module 'Test-ItemProperty' -Force
+        Remove-ItemProperty -Path $script:TestRegistry_Network -Name "Channel" -ErrorAction Ignore
+        Remove-Module 'Test-ItemProperty' -Force -ErrorAction Ignore
     }
 
     It "does have proper parameters" {
         Get-Command Test-ItemProperty | Should -HaveParameter Path -Type ([string]) -Mandatory
         Get-Command Test-ItemProperty | Should -HaveParameter Name -Type ([string])
+        Get-Command Test-ItemProperty | Should -HaveParameter PropertyType -Type ([string]) -Alias "Type"
+        Get-Command Test-ItemProperty | Should -HaveParameter Value -Type ([object])
     }
 
     Context "unit tests" {
@@ -68,6 +75,46 @@ Describe "Test-ItemProperty" {
             $testPath = $script:HKCU_Environment
 
             $scriptBlock = { Test-ItemProperty -Path $testPath -Name "Path" }
+
+            $returnValue = Invoke-Command $scriptBlock
+
+            $returnValue | Should -Be $true
+        }
+
+        It "returns false if property type does not match" {
+            $testPath = $script:HKCU_Environment
+
+            $scriptBlock = { Test-ItemProperty -Path $testPath -Name "Path" -PropertyType "Binary" }
+
+            $returnValue = Invoke-Command $scriptBlock
+
+            $returnValue | Should -Be $false
+        }
+
+        It "returns true if property type does match" {
+            $testPath = $script:HKCU_Environment
+
+            $scriptBlock = { Test-ItemProperty -Path $testPath -Name "Path" -PropertyType "ExpandString" }
+
+            $returnValue = Invoke-Command $scriptBlock
+
+            $returnValue | Should -Be $true
+        }
+
+        It "returns false if property value does not match" {
+            $testPath = $script:TestRegistry_Network
+
+            $scriptBlock = { Test-ItemProperty -Path $testPath -Name "Channel" -Value "10" }
+
+            $returnValue = Invoke-Command $scriptBlock
+
+            $returnValue | Should -Be $false
+        }
+
+        It "returns true if property value does match" {
+            $testPath = $script:TestRegistry_Network
+
+            $scriptBlock = { Test-ItemProperty -Path $testPath -Name "Channel" -Value 10 }
 
             $returnValue = Invoke-Command $scriptBlock
 

@@ -9,10 +9,20 @@ function Test-ItemProperty {
 
         [Parameter()]
         [string]
-        $Name
+        $Name,
+
+        [Parameter()]
+        [Alias('Type')]
+        [ValidateSet('String', 'ExpandString', 'MultiString', 'DWord', 'QWord', 'Binary', 'Unknown')]
+        [string]
+        $PropertyType,
+
+        [Parameter()]
+        [object]
+        $Value
     )
 
-    $isContainer = Test-Path -Path $Path -PathType Container
+    $isContainer = Test-Path -Path $Path -PathType "Container"
     if (-not $isContainer) {
         return $false
     }
@@ -26,8 +36,21 @@ function Test-ItemProperty {
         return $false
     }
 
-    $objectMembers = $itemProperties | Get-Member -Name $Name
-    if (-not $objectMembers) {
+    $objectMember = $itemProperties | Get-Member -Name $Name | Select-Object -First 1
+    if (-not $objectMember) {
+        return $false
+    }
+
+    if ([string]::IsNullOrEmpty($PropertyType) -and [string]::IsNullOrEmpty($Value)) {
+        return $true
+    }
+
+    $itemObject = Get-Item -Path $Path
+    if (-not [string]::IsNullOrEmpty($PropertyType) -and $itemObject.GetValueKind($Name).ToString() -ne $PropertyType) {
+        return $false
+    }
+
+    if (-not [string]::IsNullOrEmpty($Value) -and -not $itemObject.GetValue($Name).Equals($Value)) {
         return $false
     }
 
