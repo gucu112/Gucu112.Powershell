@@ -1,43 +1,6 @@
+Import-Module (Join-Path $PSScriptRoot '..\..\modules\Gucu112.Powershell.Utility\src\Test-ItemProperty.psm1')
+
 # TODO: Move to Utility module
-
-function Test-ItemProperty {
-    [CmdletBinding()]
-    param (
-        [Parameter()]
-        [string]
-        $Path,
-
-        [Parameter()]
-        [string]
-        $Name
-
-        # [Parameter()]
-        # [string]
-        # $PropertyType,
-
-        # [Parameter()]
-        # [string]
-        # $Value
-    )
-
-    $isContainer = Test-Path -Path $Path -PathType Container
-    if (-not $isContainer) {
-        return $false
-    }
-
-    $itemProperties = Get-ItemProperty -Path $Path
-    if (-not $itemProperties) {
-        return $false
-    }
-
-    $objectMembers = $itemProperties | Get-Member -Name $Name
-    if (-not $objectMembers) {
-        return $false
-    }
-
-    $true
-}
-
 function Add-ItemProperty {
     [CmdletBinding()]
     param (
