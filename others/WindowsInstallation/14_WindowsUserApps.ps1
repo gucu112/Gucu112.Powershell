@@ -12,7 +12,7 @@ Install-WinGetPackage -Id 'Adobe.Acrobat.Reader.64-bit' -MatchOption Equals -Sou
 
 # Install Microsoft apps
 Install-WinGetPackage -Name 'Microsoft OneDrive' -MatchOption Equals -Source winget -Mode Silent
-Install-WinGetPackage -Name 'Outlook for Windows' -MatchOption Equals -Source msstore -Mode Silent
+# Install-WinGetPackage -Name 'Outlook for Windows' -MatchOption Equals -Source msstore -Mode Silent
 Install-WinGetPackage -Name 'OneNote' -MatchOption Equals -Source msstore -Mode Silent
 
 # Install Browser apps
@@ -22,6 +22,7 @@ Install-WinGetPackage -Id 'Google.Chrome' -MatchOption Equals -Source winget -Mo
 # Install-WinGetPackage -Id 'Opera.OperaGX' -MatchOption Equals -Source winget -Mode Silent
 
 # Install Office apps
+Install-WinGetPackage -Id 'Mozilla.Thunderbird' -MatchOption Equals -Source winget -Mode Silent
 Install-WinGetPackage -Name 'LibreOffice' -MatchOption Equals -Source winget -Mode Silent
 Get-ChildItem -Path "$env:PUBLIC\Desktop" -Filter 'LibreOffice*.lnk' | Remove-Item
 
