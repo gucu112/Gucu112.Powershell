@@ -1,4 +1,4 @@
-. (Join-Path $PSScriptRoot '00_Common.ps1')
+Import-Module (Join-Path $PSScriptRoot '..\..\modules\Gucu112.Powershell.Utility\Gucu112.Powershell.Utility.psd1')
 
 # System -> Display -> Ease cursor movement between displays
 # TODO
