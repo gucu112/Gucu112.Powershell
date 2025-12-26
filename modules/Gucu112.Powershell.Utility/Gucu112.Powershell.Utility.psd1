@@ -75,6 +75,7 @@ NestedModules = @(
     'src\Add-ItemProperty.psm1'
     'src\Get-WindowsIdentity.psm1'
     'src\Get-WindowsUser.psm1'
+    'src\Stop-WindowsUser.psm1'
     'src\Test-ItemProperty.psm1'
     'src\Test-WindowsIdentity.psm1'
 )
@@ -85,6 +86,7 @@ FunctionsToExport = @(
     'Add-ItemProperty'
     'Get-WindowsIdentity'
     'Get-WindowsUser'
+    'Stop-WindowsUser'
     'Test-ItemProperty'
     'Test-WindowsIdentity'
     # BetterTls
