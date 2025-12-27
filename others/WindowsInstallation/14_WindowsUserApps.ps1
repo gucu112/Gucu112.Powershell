@@ -17,7 +17,7 @@ Install-WinGetPackage -Name 'OneNote' -MatchOption Equals -Source msstore -Mode 
 
 # Install Browser apps
 Install-WinGetPackage -Id 'Microsoft.Edge' -MatchOption Equals -Source winget -Mode Silent
-Install-WinGetPackage -Id 'Google.Chrome' -MatchOption Equals -Source winget -Mode Silent
+# Install-WinGetPackage -Id 'Google.Chrome' -MatchOption Equals -Source winget -Mode Silent
 # Install-WinGetPackage -Id 'Mozilla.Firefox' -MatchOption Equals -Source winget -Mode Silent
 # Install-WinGetPackage -Id 'Opera.OperaGX' -MatchOption Equals -Source winget -Mode Silent
 
