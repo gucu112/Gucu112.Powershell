@@ -15,7 +15,8 @@ Install-WinGetPackage -Id 'Kubernetes.minikube' -MatchOption Equals -Source wing
 # TODO: Configure docker with minikube
 #Requires -RunAsAdministrator
 dockerd --register-service
-# minikube docker-env
+# minikube start --driver=docker
+# minikube start --driver=hyperv
 
 # Install Git for Windows
 $gitOptionsPath = (Resolve-Path "~\OneDrive\Settings\Git\git_options.ini").Path
