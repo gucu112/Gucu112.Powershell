@@ -1,4 +1,5 @@
-# requires administration privileges
+#Requires -RunAsAdministrator
+
 Get-WindowsOptionalFeature -Online | Format-Table
 
 Disable-WindowsOptionalFeature -FeatureName 'WindowsMediaPlayer' -Online
