@@ -12,8 +12,7 @@ function Get-WindowsUser {
     param(
         [Parameter(ValueFromPipeline)]
         [Alias('WindowsIdentity')]
-        # TODO: Try custom validator or something like ValidateNotEmpty()
-        # [ValidateNotNull()]
+        [ValidateNotNullOrEmpty()]
         [WindowsIdentity[]]$Identity = @(Get-WindowsIdentity -Current),
 
         [Parameter(ParameterSetName = 'LocalUser')]
