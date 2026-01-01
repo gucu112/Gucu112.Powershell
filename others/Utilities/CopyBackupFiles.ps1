@@ -1,6 +1,6 @@
-Function Get-FileGroup
+function Get-FileGroup
 {
-    Param (
+    param (
         [string] $Ext
     )
 
@@ -50,17 +50,16 @@ Function Get-FileGroup
     return $result
 }
 
-Function Copy-FileGroup
+function Copy-FileGroup
 {
-    Param (
+    param (
         [string] $SourcePath,
         [string] $DestinationPath
     )
 
     $sourceFiles = Get-ChildItem -Recurse $SourcePath `
         | Where-Object { -not $_.PSIsContainer } `
-        | ForEach-Object `
-        {
+        | ForEach-Object {
             Add-Member -InputObject $_ `
                 -MemberType NoteProperty `
                 -Name 'Group' `
@@ -69,33 +68,29 @@ Function Copy-FileGroup
             $_
         }
 
-    #$sourceFiles | Format-Table -Property Extension, Group
+    # $sourceFiles | Format-Table -Property Extension, Group
 
-    #$sourceFiles | Where { $_.Group -eq 'Inne' } | Format-Table -Property Extension, Group
+    # $sourceFiles | Where { $_.Group -eq 'Inne' } | Format-Table -Property Extension, Group
 
-    $SourcePath = $SourcePath.TrimEnd('\') +  '\'
+    $SourcePath = $SourcePath.TrimEnd('') +  ''
 
-    $sourceFiles | ForEach-Object `
-    {
+    $sourceFiles | ForEach-Object {
 
-        $groupDestinaionPath = (Join-Path $DestinationPath -ChildPath $_.Group)
-        If (-Not (Test-Path $groupDestinaionPath -PathType Container))
-        {
-            New-Item $groupDestinaionPath -ItemType Directory -Verbose | Out-Null
+        $groupDestinationPath = (Join-Path $DestinationPath -ChildPath $_.Group)
+        if (-not (Test-Path $groupDestinationPath -PathType Container)) {
+            New-Item $groupDestinationPath -ItemType Directory -Verbose  Out-Null
         }
 
         $folderDestinationName = (Split-Path $SourcePath -Qualifier)[0] + '_' + (Split-Path $SourcePath -Leaf)
-        $folderDestinationPath = (Join-Path $groupDestinaionPath -ChildPath $folderDestinationName)
-        If (-Not (Test-Path $folderDestinationPath -PathType Container))
-        {
-            New-Item $folderDestinationPath -ItemType Directory -Verbose | Out-Null
+        $folderDestinationPath = (Join-Path $groupDestinationPath -ChildPath $folderDestinationName)
+        if (-not (Test-Path $folderDestinationPath -PathType Container)) {
+            New-Item $folderDestinationPath -ItemType Directory -Verbose  Out-Null
         }
 
         $currentSourcePath = $_.FullName
         $currentDestinationPath = (Join-Path -Path $folderDestinationPath `
-            -ChildPath $_.FullName.Replace($SourcePath, '').Replace('\', '__'))
-        If (-Not (Test-Path $currentDestinationPath -PathType Leaf))
-        {
+            -ChildPath $_.FullName.Replace($SourcePath, '').Replace('', '__'))
+        if (-not (Test-Path $currentDestinationPath -PathType Leaf)) {
             Copy-Item -Path $currentSourcePath -Destination $currentDestinationPath -Verbose
         }
     }
@@ -106,7 +101,7 @@ $sourcePaths = 'G:\_Pobrane', 'G:\_Pulpit', 'G:\Users\Kanapka\Documents', 'G:\Us
 
 $destinationPath = 'E:\Others\Beata'
 
-Foreach ($path In $sourcePaths)
+foreach ($path in $sourcePaths)
 {
     Copy-FileGroup -SourcePath $path -DestinationPath $destinationPath
 }
