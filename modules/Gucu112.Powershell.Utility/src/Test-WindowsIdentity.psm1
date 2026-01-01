@@ -11,7 +11,7 @@ function Test-WindowsIdentity {
 
     #region Parameters
     [CmdletBinding(DefaultParameterSetName = 'Administrator', SupportsShouldProcess)]
-    [OutputType([System.Boolean])]
+    [OutputType([bool])]
     param(
         [Parameter(Position = 0)]
         [Alias('WindowsIdentity')]

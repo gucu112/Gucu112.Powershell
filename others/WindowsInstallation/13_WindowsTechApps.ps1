@@ -13,7 +13,9 @@ Install-WinGetPackage -Name 'Docker CLI' -MatchOption Equals -Source winget -Mod
 Install-WinGetPackage -Id 'Kubernetes.minikube' -MatchOption Equals -Source winget -Mode Silent
 
 # TODO: Configure docker with minikube
-# minikube docker-env
+#Requires -RunAsAdministrator
+dockerd --register-service
+# minikube start --driver=docker
 
 # Install Git for Windows
 $gitOptionsPath = (Resolve-Path "~\OneDrive\Settings\Git\git_options.ini").Path
@@ -28,6 +30,7 @@ $gitEmail = $(git config user.email)
 & $bashPath -c "ssh-keygen -t ed25519 -C '$gitEmail' -f '/c/Users/${env:USERNAME}/.ssh/id_ed25519' -N ''"
 # ssh-keygen -t ed25519 -C "$gitEmail" -f "/c/Users/BasowQA/.ssh/id_ed25519" -N '""'
 
+# TODO: Remove shortcut from "C:\Users\BasowQA\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Git.lnk"
 # TODO: Maybe backup SSH key (or whole .ssh directory) to the cloud or locally
 # TODO: Format windows to unix path - as I did in Selenoid local install script
 # TODO: Resolve path that does not exist

@@ -1,5 +1,5 @@
 param(
-    [string]$ComputerName = "Gucu112-LAPTOP"
+    [string]$Language = "en-US"
 )
 
 Import-Module (Join-Path $PSScriptRoot '..\..\modules\Gucu112.Powershell.Utility\Gucu112.Powershell.Utility.psd1')
@@ -10,13 +10,13 @@ if (-not (Test-WindowsIdentity -Administrator)) {
     exit
 }
 
-if ((Get-ComputerInfo).CsDnsHostName -ne $ComputerName) {
-    Rename-Computer -NewName $ComputerName
-    Write-Information "Computer will be restarted in 5 seconds..."
+if ((Get-ComputerInfo).OsLocale -ne $Language) {
+    Install-Language $Language -ApplyToSettings
+    Write-Information "Current user will be logged off in 5 seconds..."
     Start-Sleep -Seconds 5
-    Restart-Computer
+    Stop-WindowsUser
 }
 else {
-    Write-Warning "The computer name is already set to '$ComputerName'."
+    Write-Warning "The system language is already set to '$Language'."
     Start-Sleep -Seconds 5
 }

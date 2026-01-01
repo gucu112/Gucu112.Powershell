@@ -72,16 +72,22 @@ RequiredAssemblies = @(
 
 # Modules to import as nested modules of the module specified in RootModule/ModuleToProcess
 NestedModules = @(
+    'src\Add-ItemProperty.psm1'
     'src\Get-WindowsIdentity.psm1'
     'src\Get-WindowsUser.psm1'
+    'src\Stop-WindowsUser.psm1'
+    'src\Test-ItemProperty.psm1'
     'src\Test-WindowsIdentity.psm1'
 )
 
 # Functions to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no functions to export.
 FunctionsToExport = @(
     # Gucu112.Powershell.Utility
+    'Add-ItemProperty'
     'Get-WindowsIdentity'
     'Get-WindowsUser'
+    'Stop-WindowsUser'
+    'Test-ItemProperty'
     'Test-WindowsIdentity'
     # BetterTls
     'Disable-Tls'
