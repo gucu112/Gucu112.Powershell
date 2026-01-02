@@ -1,6 +1,6 @@
 param(
     [string]$Scope = 'CurrentUser',
-    [bool]$Force = $true
+    [bool]$Force = $false
 )
 
 ##
