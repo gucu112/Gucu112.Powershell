@@ -1,5 +1,4 @@
-# TODO: Check if it works without setting up the Chocolatey package provider
-# Invoke-Expression -Command "& .\modules\Gucu112.Powershell.PackageManagement\tools\InstallPackageManagement.ps1"
+Invoke-Expression -Command "& .\modules\Gucu112.Powershell.PackageManagement\tools\InstallPackageManagement.ps1"
 
 # CPlusPlus & CSharp
 @('vcredist-all', 'directx', 'dotnetfx', 'dotnet-sdk') | ForEach-Object {
@@ -27,3 +26,7 @@ Get-ChildItem -Path "$env:USERPROFILE\Desktop" -Filter 'asio4all*.lnk' | Remove-
 $updatePackagesProperties = @('Name', @{Label = 'CurrentVersion'; Expression = { $_.Version } }, @{Label = 'LatestVersion'; Expression = { (Find-Package $_.Name -Provider ChocolateyGet).Version } })
 $updatePackages = Get-Package -ProviderName ChocolateyGet | Select-Object -Property $updatePackagesProperties | Where-Object { $_.CurrentVersion -lt $_.LatestVersion }
 $updatePackages | ForEach-Object { Install-Package -Name $_.Name -Source Chocolatey -AcceptLicense -ErrorAction SilentlyContinue | Out-Default }
+
+# Pin Chocolatey packages
+choco pin add -n python
+choco pin add -n asio4all

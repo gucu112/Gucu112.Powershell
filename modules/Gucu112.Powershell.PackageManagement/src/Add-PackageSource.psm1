@@ -48,29 +48,33 @@ function Add-PackageSource {
                     Unregister-PSRepository -Name $Name
                 }
 
-                $installationPolicy = @('Untrusted', 'Trusted')[$Trusted.IsPresent]
+                if (-not (Get-PackageSource -Name $Name -ErrorAction Ignore)) {
+                    $installationPolicy = @('Untrusted', 'Trusted')[$Trusted.IsPresent]
 
-                $repositoryParams = @{
-                    Name = $Name
-                    SourceLocation = $Location
-                    InstallationPolicy = $installationPolicy
-                }
-
-                if ($Location -like '*powershellgallery.com/api/v2*') {
                     $repositoryParams = @{
-                        Default = $true
+                        Name = $Name
+                        SourceLocation = $Location
                         InstallationPolicy = $installationPolicy
                     }
-                }
 
-                Register-PSRepository @repositoryParams -ErrorAction $ErrorAction | Out-Null
+                    if ($Location -like '*powershellgallery.com/api/v2*') {
+                        $repositoryParams = @{
+                            Default = $true
+                            InstallationPolicy = $installationPolicy
+                        }
+                    }
+
+                    Register-PSRepository @repositoryParams -ErrorAction $ErrorAction | Out-Null
+                }
             }
             default {
                 if ($Force.IsPresent -and (Get-PackageSource -Name $Name -ErrorAction Ignore)) {
                     Unregister-PackageSource -Name $Name -Force
                 }
 
-                Register-PackageSource -Name $Name -ProviderName $ProviderName -Location $Location -Trusted:$Trusted -Force:$Force -ErrorAction $ErrorAction
+                if (-not (Get-PackageSource -Name $Name -ErrorAction Ignore)) {
+                    Register-PackageSource -Name $Name -ProviderName $ProviderName -Location $Location -Trusted:$Trusted -Force:$Force -ErrorAction $ErrorAction
+                }
             }
         }
     }

@@ -1,5 +1,6 @@
 param(
-    [bool]$Force = $true
+    [string]$Scope = 'CurrentUser',
+    [bool]$Force = $false
 )
 
 ##
@@ -33,7 +34,7 @@ Add-PackageProvider -Name 'PowerShellGet' -Force:$Force -ErrorAction Stop | Sele
 Add-PackageSource -Name 'PSGallery' -ProviderName 'PowerShellGet' -Location 'https://www.powershellgallery.com/api/v2' -Trusted -Force:$Force -ErrorAction Stop
 
 # Install-Module
-Install-Module -Name 'Pester' -Force:$Force -SkipPublisherCheck
+Install-Module -Name 'Pester' -Scope:$Scope -Force:$Force -SkipPublisherCheck
 
 ###
 # NuGet
@@ -46,7 +47,7 @@ Add-PackageProvider -Name 'NuGet' -Force:$Force -ErrorAction Stop | Select-Objec
 Add-PackageSource -Name 'NuGetGallery' -ProviderName 'NuGet' -Location 'https://www.nuget.org/api/v2' -Trusted -Force:$Force -ErrorAction Stop
 
 # Install-Package
-Install-Package -Name 'ConfigurationHelper' -ProviderName 'NuGet' -Destination 'C:\NuGet' -Force:$Force | Out-Null
+Install-Package -Name 'ConfigurationHelper' -ProviderName 'NuGet' -Source 'NuGetGallery' -Destination 'C:\NuGet' -Force:$Force | Out-Null
 
 ###
 # ChocolateyGet
@@ -62,10 +63,21 @@ Add-PackageSource -Name 'Chocolatey' -ProviderName 'ChocolateyGet' -Location 'ht
 # Test
 ###
 
+# Get-PackageProvider
+Get-PackageProvider -ListAvailable | Format-Table
+
 # Get-PackageSource
 Get-PackageSource | Format-Table
 
 # Invoke-Pester
-(Get-PackageSource).Count | Should -Be 3
+$providers = @(Get-PackageProvider -ListAvailable | Group-Object -Property 'Name' | Where-Object `
+    { $PSItem.Name -in @('PowerShellGet', 'NuGet', 'ChocolateyGet') })
+$providers | Should -HaveCount 3 -Because "all package providers should be installed"
 
-# TODO: Check also if all package sources are trusted
+$sources = @(Get-PackageSource | Group-Object -Property 'Name' | Where-Object `
+    { $PSItem.Name -in @('PSGallery', 'NuGetGallery', 'Chocolatey') })
+$sources | Should -HaveCount 3 -Because "all package sources should be installed"
+foreach ($source in $sources) {
+    $source.Group | Where-Object { $_.IsTrusted } | Should -Not -BeNullOrEmpty `
+        -Because "package source '$($source.Name)' should be trusted"
+}
