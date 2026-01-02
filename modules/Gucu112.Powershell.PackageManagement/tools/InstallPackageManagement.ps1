@@ -99,17 +99,14 @@ Get-PackageProvider -ListAvailable | Format-Table
 Get-PackageSource | Format-Table
 
 # Invoke-Pester
-$providerNames = @(Get-PackageProvider -ListAvailable | Select-Object -ExpandProperty 'Name')
-$providerNames | Should -Contain 'PowerShellGet'
-$providerNames | Should -Contain 'NuGet'
-$providerNames | Should -Contain 'ChocolateyGet'
+$providers = @(Get-PackageProvider -ListAvailable | Group-Object -Property 'Name' | Where-Object `
+    { $PSItem.Name -in @('PowerShellGet', 'NuGet', 'ChocolateyGet') })
+$providers | Should -HaveCount 3 -Because "all package providers should be installed"
 
-$sourceNames = @(Get-PackageSource | Select-Object -ExpandProperty 'Name')
-$sourceNames | Should -Contain 'PSGallery'
-$sourceNames | Should -Contain 'NuGetGallery'
-$sourceNames | Should -Contain 'Chocolatey'
-
-foreach ($packageSource in Get-PackageSource) {
-    $packageSource.Trusted | Should -Be $true -Because `
-        "package source '$($packageSource.Name)' should be trusted"
+$sources = @(Get-PackageSource | Group-Object -Property 'Name' | Where-Object `
+    { $PSItem.Name -in @('PSGallery', 'NuGetGallery', 'Chocolatey') })
+$sources | Should -HaveCount 3 -Because "all package sources should be installed"
+foreach ($source in $sources) {
+    $source.Group | Where-Object { $_.IsTrusted } | Should -Not -BeNullOrEmpty `
+        -Because "package source '$($source.Name)' should be trusted"
 }
