@@ -1,4 +1,4 @@
-Invoke-Expression -Command "& .\modules\Gucu112.Powershell.PackageManagement\tools\InstallPackageManagement.ps1 -Force:`$false"
+Invoke-Expression -Command "& .\modules\Gucu112.Powershell.PackageManagement\tools\InstallPackageManagement.ps1"
 
 # CPlusPlus & CSharp
 @('vcredist-all', 'directx', 'dotnetfx', 'dotnet-sdk') | ForEach-Object {
