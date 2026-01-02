@@ -29,3 +29,7 @@ ExecStart=/usr/bin/dockerd -H fd:// -H tcp://0.0.0.0:2375
 EOF
 sudo systemctl daemon-reload
 sudo systemctl restart docker.service
+
+# Expose ports for minikube
+# sudo ufw allow 32773:32777/tcp
+# sudo ufw reload

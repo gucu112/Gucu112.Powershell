@@ -33,6 +33,9 @@ $gitEmail = $(git config user.email)
 & $bashPath -c "ssh-keygen -t ed25519 -C '$gitEmail' -f '/c/Users/${env:USERNAME}/.ssh/id_ed25519' -N ''"
 # ssh-keygen -t ed25519 -C "$gitEmail" -f "/c/Users/BasowQA/.ssh/id_ed25519" -N '""'
 
+# Enable and start ssh-agent service
+Get-Service ssh-agent | Set-Service -StartupType Automatic -PassThru | Start-Service
+
 # TODO: Remove shortcut from "C:\Users\BasowQA\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Git.lnk"
 # TODO: Maybe backup SSH key (or whole .ssh directory) to the cloud or locally
 # TODO: Format windows to unix path - as I did in Selenoid local install script
