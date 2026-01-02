@@ -1,14 +1,11 @@
 param(
     [string]$Scope = 'CurrentUser',
-    [bool]$Force = $true
+    [bool]$Force = $false
 )
 
 ##
 # Init
 ###
-
-Write-Verbose "Installing 'Gucu112.Powershell.PackageManagement' required modules."
-Install-Module Microsoft.WinGet.Client -RequiredVersion 1.11.460 -Scope:$Scope -Force:$Force
 
 if (Find-Module Gucu112.Powershell.PackageManagement -ErrorAction Ignore) {
     Install-Module Gucu112.Powershell.PackageManagement
@@ -61,32 +58,6 @@ Add-PackageProvider -Name 'ChocolateyGet' -Force:$Force -ErrorAction Stop | Sele
 
 # Add-ChocolateyPackageSource -Default
 Add-PackageSource -Name 'Chocolatey' -ProviderName 'ChocolateyGet' -Location 'https://www.chocolatey.org/api/v2' -Trusted -Force:$Force -ErrorAction Stop
-
-###
-# WinGet
-###
-
-# Remove-WinGetSource 'winget'
-if ($Force.IsPresent -and (Get-WinGetSource -Name 'winget' -ErrorAction Ignore)) {
-    Remove-WinGetSource -Name 'winget' -ErrorAction Stop
-}
-
-# Add-WinGetSource 'winget'
-if (-not (Get-WinGetSource -Name 'winget' -ErrorAction Ignore)) {
-    Add-WinGetSource -Name 'winget' -Type 'Microsoft.PreIndexed.Package' `
-        -Argument 'https://cdn.winget.microsoft.com/cache' -ErrorAction Stop
-}
-
-# Remove-WinGetSource 'msstore'
-if ($Force.IsPresent -and (Get-WinGetSource -Name 'msstore' -ErrorAction Ignore)) {
-    Remove-WinGetSource -Name 'msstore' -ErrorAction Stop
-}
-
-# Add-WinGetSource 'msstore'
-if (-not (Get-WinGetSource -Name 'msstore' -ErrorAction Ignore)) {
-    Add-WinGetSource -Name 'msstore' -Type 'Microsoft.Rest' `
-        -Argument 'https://storeedgefd.dsx.mp.microsoft.com/v9.0' -ErrorAction Stop
-}
 
 ###
 # Test

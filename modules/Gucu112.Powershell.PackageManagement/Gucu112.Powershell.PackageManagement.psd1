@@ -54,7 +54,6 @@ PowerShellVersion = '5.1'
 RequiredModules = @(
     'PackageManagement'
     'PowerShellGet'
-    'Microsoft.WinGet.Client'
     # 'Gucu112.Powershell.Utility'
 )
 
