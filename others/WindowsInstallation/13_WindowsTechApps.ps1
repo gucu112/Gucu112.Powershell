@@ -12,9 +12,12 @@ Install-WinGetPackage -Id 'Microsoft.Sysinternals' -Source winget -Location "C:\
 Install-WinGetPackage -Name 'Docker CLI' -MatchOption Equals -Source winget -Mode Silent
 Install-WinGetPackage -Id 'Kubernetes.minikube' -MatchOption Equals -Source winget -Mode Silent
 
-# TODO: Configure docker with minikube
+# Configure docker with minikube
 #Requires -RunAsAdministrator
 dockerd --register-service
+[System.Environment]::SetEnvironmentVariable(
+    "DOCKER_HOST", "tcp://[::1]:2375", "User"
+)
 # minikube start --driver=docker
 
 # Install Git for Windows
