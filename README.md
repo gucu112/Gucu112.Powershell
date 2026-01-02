@@ -82,7 +82,7 @@ New-ModuleFunction -Name @('New-Thing', 'Get-Thing', 'Test-Thing') -Path '.\modu
 
 ### Testing
 
-Not yet implemented.
+Some tests are implemented. Documentation in progress...
 
 ## Deployment
 
@@ -177,6 +177,11 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE.txt) 
       - Find-Package
       - Get-Package
       - Uninstall-Package
+
+## Useful links
+
+- [Inno Setup Parameters](https://jrsoftware.org/ishelp/index.php?topic=setupcmdline)
+- [NSIS Setup Parameters](https://nsis.sourceforge.io/Docs/Chapter3.html)
 
 ## Changelog
 
