@@ -45,5 +45,3 @@ function Get-WindowsUser {
     }
     #endregion
 }
-
-

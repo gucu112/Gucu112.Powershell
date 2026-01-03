@@ -57,5 +57,3 @@ function Test-WindowsIdentity {
     }
     #endregion
 }
-
-

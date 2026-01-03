@@ -46,5 +46,3 @@ function Add-ItemProperty {
             -PropertyType $PropertyType | Out-Null
     }
 }
-
-Export-ModuleMember -Function Add-ItemProperty

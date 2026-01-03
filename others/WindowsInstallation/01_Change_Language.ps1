@@ -10,7 +10,7 @@ if (-not (Test-WindowsIdentity -Administrator)) {
     exit
 }
 
-if ((Get-ComputerInfo).OsLocale -ne $Language) {
+if ((Get-SystemLanguage) -ne $Language) {
     Install-Language $Language -ApplyToSettings
     Write-Information "Current user will be logged off in 5 seconds..."
     Start-Sleep -Seconds 5

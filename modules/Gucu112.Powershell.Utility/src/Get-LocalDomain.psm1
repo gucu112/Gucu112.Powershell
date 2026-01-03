@@ -14,5 +14,3 @@ function Get-LocalDomain {
         }
     }
 }
-
-

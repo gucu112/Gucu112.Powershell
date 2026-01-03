@@ -63,5 +63,3 @@ function Get-WindowsIdentity {
     }
     #endregion
 }
-
-
