@@ -3,7 +3,8 @@
 function Get-WindowsUser {
     #region Documentation
     <#
-    No documentation yet.
+    .DESCRIPTION
+    No description yet.
     #>
     #endregion
 
@@ -25,8 +26,11 @@ function Get-WindowsUser {
     begin {
         $userPropertySet = @('Domain', 'Name', 'Description', 'SID', 'Enabled', 'IsAdministrator', 'LastLogon')
 
-        # TODO: Move to separate function (Get-DnsDomain)
-        $domain = [System.Net.Dns]::GetHostName()
+        if (-not $Local.IsPresent) {
+            throw [System.NotImplementedException]::new()
+        }
+
+        $domain = Get-LocalDomain
     }
     #endregion
 

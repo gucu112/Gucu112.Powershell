@@ -5,7 +5,8 @@ using namespace System.Management.Automation
 function New-ModuleFunction {
     #region Documentation
     <#
-    No documentation yet.
+    .DESCRIPTION
+    No description yet.
     #>
     #endregion
 
@@ -98,7 +99,7 @@ function New-ModuleFunction {
                 New-Item -Path $PSItem.Path -ItemType File | Out-Null
 
                 $fileContent = $regularFileTemplate -replace '{{FunctionName}}', $PSItem.Name `
-                    -replace '{{Documentation}}', 'No documentation yet.' `
+                    -replace '{{Documentation}}', 'No description yet.' `
                     -replace '{{AliasDefinition}}', [string]::Empty `
                     -replace '{{CmdletBindings}}', [string]::Empty `
                     -replace '{{Parameters}}', [string]::Empty `

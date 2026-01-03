@@ -5,7 +5,8 @@ using namespace System.Management.Automation
 function New-ModuleScaffold {
     #region Documentation
     <#
-    No documentation yet.
+    .DESCRIPTION
+    No description yet.
     #>
     #endregion
 

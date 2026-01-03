@@ -4,7 +4,8 @@ using namespace System.Security.Principal
 function Get-WindowsIdentity {
     #region Documentation
     <#
-    No documentation yet.
+    .DESCRIPTION
+    No description yet.
     See: https://docs.microsoft.com/en-us/dotnet/api/system.security.principal.windowsidentity.getcurrent?view=netframework-4.8#system-security-principal-windowsidentity-getcurrent
     #>
     #endregion

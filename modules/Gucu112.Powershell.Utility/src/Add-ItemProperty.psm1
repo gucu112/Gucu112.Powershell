@@ -1,4 +1,8 @@
 function Add-ItemProperty {
+    <#
+    .DESCRIPTION
+    No description yet.
+    #>
     [CmdletBinding()]
     param (
         [Parameter(Mandatory)]

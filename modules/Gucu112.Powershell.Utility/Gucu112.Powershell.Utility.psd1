@@ -12,7 +12,7 @@
 RootModule = 'Gucu112.Powershell.Utility.psm1'
 
 # Version number of this module.
-ModuleVersion = '0.1.2512.200'
+ModuleVersion = '0.1.2601.030'
 
 # Supported PSEditions
 # CompatiblePSEditions = @()
@@ -125,13 +125,13 @@ PrivateData = @{
     PSData = @{
 
         # Tags applied to this module. These help with module discovery in online galleries.
-        # Tags = @()
+        Tags = @()
 
         # A URL to the license for this module.
-        # LicenseUri = ''
+        LicenseUri = 'https://github.com/gucu112/Gucu112.Powershell/blob/master/LICENSE.txt'
 
         # A URL to the main website for this project.
-        # ProjectUri = ''
+        ProjectUri = 'https://github.com/gucu112/Gucu112.Powershell/tree/master/modules/Gucu112.Powershell.Utility'
 
         # A URL to an icon representing this module.
         # IconUri = ''
