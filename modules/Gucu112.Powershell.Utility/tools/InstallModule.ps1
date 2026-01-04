@@ -7,6 +7,11 @@ param(
 Write-Verbose "Installing 'Gucu112.Powershell.Utility' required modules."
 Install-Module BetterTls -RequiredVersion 0.1.0 -Scope:$Scope -Force:$Force
 
+if ($Force.IsPresent -and (Get-Module -Name 'Gucu112.Powershell.Utility' -ListAvailable)) {
+    Write-Verbose "Uninstalling all versions of 'Gucu112.Powershell.Utility' module."
+    Uninstall-Module 'Gucu112.Powershell.Utility' -AllVersions -Force:$Force
+}
+
 if (Find-Module 'Gucu112.Powershell.Utility' -MinimumVersion 0.1.0 -ErrorAction Ignore) {
     Write-Verbose "Installing 'Gucu112.Powershell.Utility' module."
     Install-Module 'Gucu112.Powershell.Utility' -MinimumVersion 0.1.0 -Scope:$Scope -Force:$Force
