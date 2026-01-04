@@ -85,6 +85,7 @@ New-ModuleFunction -Name @('New-Thing', 'Get-Thing', 'Test-Thing') -Path '.\modu
 You can run single module tests using respective `RunTestsLocally.ps1` script:
 
 ```shell
+Install-Module Pester
 Invoke-Expression -Command "& .\modules\Gucu112.Powershell.Utility\tools\RunTestsLocally.ps1"
 ```
 
@@ -93,7 +94,8 @@ Remember to update script path in the command above to target selected module.
 Optionally, you can also run static analysis of the module using this command:
 
 ```shell
-TODO
+Install-Module PSScriptAnalyzer
+Invoke-ScriptAnalyzer -Path ".\modules\Gucu112.Powershell.Utility" -Recurse
 ```
 
 ## Deployment
@@ -101,7 +103,7 @@ TODO
 Only after successful run and test it is reasonable to publish module:
 
 ```shell
-TODO
+Publish-Module -Path ".\modules\Gucu112.Powershell.Utility" -NuGetApiKey "$env:NUGET_API_KEY"
 ```
 
 ## Contributing
