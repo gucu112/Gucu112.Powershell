@@ -45,4 +45,5 @@ New-Item -Path $ConfigDir -ItemType Directory -Force | Out-Null
 $ConfigPath = Join-Path -Path $ConfigDir -ChildPath "LastUsedSettings.json"
 $Config | ConvertTo-Json -Depth 5 | Out-File -FilePath $ConfigPath -Encoding UTF8
 
-& ([scriptblock]::Create((irm "https://debloat.raphi.re/"))) -Silent -Sysprep -RunSavedSettings
+& ([scriptblock]::Create((Invoke-RestMethod "https://debloat.raphi.re/"))) `
+    -Silent -Sysprep -RunSavedSettings

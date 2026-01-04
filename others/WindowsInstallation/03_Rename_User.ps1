@@ -1,8 +1,10 @@
-Import-Module (Join-Path $PSScriptRoot '..\..\modules\Gucu112.Powershell.Utility\Gucu112.Powershell.Utility.psd1')
+$modulePath = '..\..\modules\Gucu112.Powershell.Utility\tools\InstallModule.ps1'
+Invoke-Expression -Command "& $((Resolve-Path (Join-Path $PSScriptRoot $modulePath)).Path)"
 
 if (-not (Test-WindowsIdentity -Administrator)) {
     Start-Process -FilePath "powershell" -Verb "RunAs" `
-        -ArgumentList @("-File", $($MyInvocation.MyCommand.Path))
+        -ArgumentList @("-File", $($MyInvocation.MyCommand.Path)) `
+        -WorkingDirectory $PSScriptRoot
     exit
 }
 
