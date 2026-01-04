@@ -1,7 +1,8 @@
 function Add-PackageSource {
     #region Documentation
     <#
-    No documentation yet.
+    .DESCRIPTION
+    No description yet.
     #>
     #endregion
 
@@ -12,7 +13,6 @@ function Add-PackageSource {
         [string]$Name,
 
         [Parameter(Mandatory)]
-        # TODO: Move list of available providers to configuration
         [ValidateSet('PowerShellGet', 'NuGet', 'ChocolateyGet')]
         [string]$ProviderName,
 
@@ -21,55 +21,61 @@ function Add-PackageSource {
         [string]$Location,
 
         [Parameter()]
-        [switch]$Trusted = $false,
+        [switch]$Trusted = [switch]::NotPresent,
 
         [Parameter()]
-        [switch]$Force = $false
+        [switch]$Force = [switch]::NotPresent
     )
     #endregion
 
     #region Begin
     begin {
-        # TODO: Move to module configuration
-        $providerVersionMap = @{
-            PowerShellGet = '2.2.5'
-            NuGet = '2.8.5.201'
-            ChocolateyGet = '3.1.1'
+        $ErrorAction = $PSCmdlet.MyInvocation.BoundParameters.ErrorAction
+        if ($null -eq $ErrorAction) {
+            $ErrorAction = $ErrorActionPreference
         }
 
         if ($Force.IsPresent -or (-not (Get-PackageProvider -Name $ProviderName -ListAvailable -ErrorAction Ignore))) {
-            Import-PackageProvider -Name $ProviderName -MinimumVersion $providerVersionMap[$ProviderName] -ErrorAction Stop -Force:$Force | Out-Null
+            $providerVersionMap = $PSCmdlet.MyInvocation.MyCommand.Module.PrivateData.Configuration.PackageProviderVersionMap
+            Import-PackageProvider -Name $ProviderName -MinimumVersion $providerVersionMap[$ProviderName] -Force:$Force -ErrorAction Stop | Out-Null
         }
+    }
 
+    #region Process
+    process {
         switch ($ProviderName) {
             'PowerShellGet' {
                 if ($Force.IsPresent -and (Get-PSRepository -Name $Name -ErrorAction Ignore)) {
                     Unregister-PSRepository -Name $Name
                 }
 
-                $installationPolicy = @('Untrusted', 'Trusted')[$Trusted.IsPresent]
+                if (-not (Get-PackageSource -Name $Name -ErrorAction Ignore)) {
+                    $installationPolicy = @('Untrusted', 'Trusted')[$Trusted.IsPresent]
 
-                $repositoryParams = @{
-                    Name = $Name
-                    SourceLocation = $Location
-                    InstallationPolicy = $installationPolicy
-                }
-
-                if ($Location -like '*powershellgallery.com/api/v2*') {
                     $repositoryParams = @{
-                        Default = $true
+                        Name = $Name
+                        SourceLocation = $Location
                         InstallationPolicy = $installationPolicy
                     }
-                }
 
-                Register-PSRepository @repositoryParams | Out-Null
+                    if ($Location -like '*powershellgallery.com/api/v2*') {
+                        $repositoryParams = @{
+                            Default = $true
+                            InstallationPolicy = $installationPolicy
+                        }
+                    }
+
+                    Register-PSRepository @repositoryParams -ErrorAction $ErrorAction | Out-Null
+                }
             }
             default {
                 if ($Force.IsPresent -and (Get-PackageSource -Name $Name -ErrorAction Ignore)) {
                     Unregister-PackageSource -Name $Name -Force
                 }
 
-                Register-PackageSource -Name $Name -ProviderName $ProviderName -Location $Location -Trusted:$Trusted -Force:$Force
+                if (-not (Get-PackageSource -Name $Name -ErrorAction Ignore)) {
+                    Register-PackageSource -Name $Name -ProviderName $ProviderName -Location $Location -Trusted:$Trusted -Force:$Force -ErrorAction $ErrorAction
+                }
             }
         }
     }

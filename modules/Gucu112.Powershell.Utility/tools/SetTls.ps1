@@ -1,7 +1,11 @@
 param(
-    [switch]$Force = $false,
-    [switch]$Confirm
+    [switch]$Force = [switch]::NotPresent,
+    [switch]$Confirm = [switch]::Present
 )
+
+if ($Force.IsPresent) {
+    $Confirm = [switch]::NotPresent
+}
 
 if (Find-Module Gucu112.Powershell.Utility -ErrorAction Ignore) {
     Write-Verbose "Installing 'Gucu112.Powershell.Utility' module."
@@ -12,3 +16,5 @@ if (Find-Module Gucu112.Powershell.Utility -ErrorAction Ignore) {
 }
 
 Set-Tls -Tls12 -Confirm:$Confirm
+
+Get-Tls

@@ -1,82 +1,73 @@
-﻿function New-ModuleFunction {
+﻿using namespace System.Collections.Generic
+using namespace System.IO
+using namespace System.Management.Automation
+
+function New-ModuleFunction {
     #region Documentation
     <#
-    No documentation yet.
+    .DESCRIPTION
+    No description yet.
     #>
     #endregion
 
     #region Parameters
     [CmdletBinding(SupportsShouldProcess)]
     param(
-        [Parameter(Mandatory, ValueFromPipeline)]
-        [Alias('FunctionName')]
-        [ValidateNotNullOrEmpty()]
-        [string[]]$Name,
-
         [Parameter(Mandatory)]
         [Alias('ModulePath', 'ModuleBasePath')]
         [ValidateNotNullOrEmpty()]
         [string]$Path,
 
-        [Parameter()]
-        [switch]$ErrorHandling
+        [Parameter(Mandatory, ValueFromPipeline)]
+        [Alias('FunctionName')]
+        [ValidateNotNullOrEmpty()]
+        [string[]]$Name,
 
-        # TODO: Add TestFile switch functionality (additional file for tests)
-        # [Parameter()]
-        # [switch]$TestFile = $false
+        [Parameter()]
+        [switch]$ErrorHandling = [switch]::Present,
+
+        [Parameter()]
+        [Alias('AddTestFile')]
+        [switch]$TestFile = [switch]::Present
     )
     #endregion
 
     #region Begin
     begin {
-        # TODO: Change string to ErrorRecord for error collection list
-        $errorCollection = New-Object System.Collections.Generic.List[string]
+        $errorCollection = New-Object List[ErrorRecord]
+        $functionCollection = New-Object List[PSCustomObject]
 
-        $moduleName = Split-Path $Path -Leaf
-        $absolutePath = $Path
-        $basePath = Resolve-Path (Join-Path $absolutePath 'src')
+        $basePath = Resolve-Path $Path
+        $moduleName = Split-Path $basePath -Leaf
+        # $moduleManifestPath = Join-Path $basePath "$moduleName.psd1"
 
-        $filePath = $Name | ForEach-Object {  }
+        $regularFileTemplate = Get-Content -Path (Join-Path $PSScriptRoot '..\data\FunctionFile.template')
 
-        $functionCollection = $Name | ForEach-Object {
-            $filePath = Join-Path $basePath "$_.psm1"
-
-            if (Test-Path $filePath) {
-                $errorCollection.Add("A function with the name $_ already exists in '$moduleName' module.")
-                return
-            }
-
-            [PSCustomObject]@{
-                Name = $_
-                Path = $filePath
-            }
+        if ($TestFile.IsPresent) {
+            $testFileTemplate = Get-Content -Path (Join-Path $PSScriptRoot '..\data\FunctionTestFile.template')
         }
-
-        $fileTemplate = Get-Content -Path (Join-Path $PSScriptRoot '..\data\NewFunction.template')
 
         $beginBlock = "{`n"
         $processBlock = "{`n    `n    }"
         $endBlock = "{`n"
 
         if ($ErrorHandling.IsPresent) {
-            $beginBlock += @'
+            $beginBlock = @'
         $ErrorAction = $PSCmdlet.MyInvocation.BoundParameters.ErrorAction
         if ($null -eq $ErrorAction) {
             $ErrorAction = $ErrorActionPreference
         }
 
-        # TODO: Change string to ErrorRecord for error collection list
-        $errorCollection = New-Object System.Collections.Generic.List[string]
+        $errorCollection = New-Object List[ErrorRecord]
 '@
 
-            $endBlock += @'
+            $endBlock = @'
         if ($errorCollection.Count -gt 0) {
-            foreach ($message in $errorCollection) {
-                Write-Error $message
+            foreach ($errorRecord in $errorCollection | Select-Object -SkipLast 1) {
+                Write-Error $errorRecord
             }
-            exit 1
+            throw $errorCollection | Select-Object -Last 1
         }
-        exit 0
 '@
         }
 
@@ -87,12 +78,28 @@
 
     #region Process
     process {
-        $functionCollection | ForEach-Object {
-            if ($PSCmdlet.ShouldProcess($_.Path)) {
-                New-Item -Path $_.Path -ItemType File | Out-Null
+        $functionCollection.Add(@{
+            Name = $Name
+            Path = Join-Path $basePath ".\src\$Name.psm1"
+        })
+    }
+    #endregion
 
-                $fileContent = $fileTemplate -replace '{{FunctionName}}', $_.Name `
-                    -replace '{{Documentation}}', 'No documentation yet.' `
+    #region End
+    end {
+        $functionCollection | ForEach-Object {
+            if (Test-Path $PSItem.Path) {
+                $exception = New-Object FileFoundException `
+                    "A function with the specified name $($PSItem.Name) already exists in '$moduleName' module."
+                $errorCollection.Add((New-Object ErrorRecord $exception, 'New-ModuleFunction', 'ResourceExists', $PSItem))
+                return
+            }
+
+            if ($PSCmdlet.ShouldProcess($PSItem.Path, 'New-ModuleFunctionFile')) {
+                New-Item -Path $PSItem.Path -ItemType File | Out-Null
+
+                $fileContent = $regularFileTemplate -replace '{{FunctionName}}', $PSItem.Name `
+                    -replace '{{Documentation}}', 'No description yet.' `
                     -replace '{{AliasDefinition}}', [string]::Empty `
                     -replace '{{CmdletBindings}}', [string]::Empty `
                     -replace '{{Parameters}}', [string]::Empty `
@@ -100,25 +107,42 @@
                     -replace '{{ProcessBlock}}', $processBlock `
                     -replace '{{EndBlock}}', $endBlock
 
-                $fileContent | Set-Content -Path $_.Path -Encoding UTF8
+                $fileContent | Set-Content -Path $PSItem.Path -Encoding UTF8
             }
 
-            # TODO: Update module manifest (add path to NestedModules and function name to FunctionsToExport)
-            # $manifestParams = Get-ModuleManifest ???
-            # Update-ModuleManifest @manifestParams
-        }
-    }
-    #endregion
+            $testFilePath = Join-Path $basePath ".\tests\$($PSItem.Name).Tests.ps1"
+            if ($TestFile.IsPresent -and $PSCmdlet.ShouldProcess($testFilePath, 'New-ModuleFunctionTestFile')) {
+                New-Item -Path $testFilePath -ItemType File | Out-Null
 
-    #region End
-    end {
+                $testFileContent = $testFileTemplate -replace '{{FunctionName}}', $PSItem.Name
+
+                $testFileContent | Set-Content -Path $testFilePath -Encoding UTF8
+            }
+
+            # TODO: Resolve issue with formatting and missing configuration properties after update
+            # if ($PSCmdlet.ShouldProcess($moduleManifestPath, 'Update-ModuleManifest')) {
+            #     $manifestParams = Get-ModuleManifest -Path $moduleManifestPath
+
+            #     $nestedModules = @(@(@(), $manifestParams.NestedModules)[$null -ne $manifestParams.NestedModules])
+            #     $functionsToExport = @(@(@(), $manifestParams.FunctionsToExport)[$null -ne $manifestParams.FunctionsToExport])
+
+            #     $updateManifestParams = @{
+            #         Path = $moduleManifestPath
+            #         NestedModules = $nestedModules + ".\src\$($PSItem.Name).psm1" | Sort-Object
+            #         FunctionsToExport = $functionsToExport + $PSItem.Name | Sort-Object
+            #     }
+
+            #     # TODO: Investigate why configuration hashtable is broken
+            #     Update-ModuleManifest @updateManifestParams
+            # }
+        }
+
         if ($errorCollection.Count -gt 0) {
-            foreach ($message in $errorCollection) {
-                Write-Error $message
+            foreach ($errorRecord in $errorCollection | Select-Object -SkipLast 1) {
+                Write-Error $errorRecord
             }
-            exit 1
+            throw $errorCollection | Select-Object -Last 1
         }
-        exit 0
     }
     #endregion
 }

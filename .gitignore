@@ -1,0 +1,25 @@
+# Cache/Options directory
+.vs/
+
+# User-specific files
+*.rsuser
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# Build results
+[Dd]ebug/
+[Dd]ebugPublic/
+[Rr]elease/
+[Rr]eleases/
+[Bb]in/
+[Oo]bj/
+[Oo]ut/
+[Ll]ib/
+[Ll]og/
+[Ll]ogs/
+
+# Test results
+[Tt]est[Rr]esults.xml
+[Cc]overage.xml

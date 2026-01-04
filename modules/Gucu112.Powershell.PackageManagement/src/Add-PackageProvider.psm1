@@ -1,7 +1,8 @@
-﻿function Add-PackageProvider {
+function Add-PackageProvider {
     #region Documentation
     <#
-    No documentation yet.
+    .DESCRIPTION
+    No description yet.
     #>
     #endregion
 
@@ -10,12 +11,11 @@
     param(
         [Parameter(Mandatory)]
         [Alias('Name')]
-        # TODO: Move list of available providers to configuration
         [ValidateSet('PowerShellGet', 'NuGet', 'ChocolateyGet')]
         [string]$ProviderName,
 
         [Parameter()]
-        [switch]$Force = $false
+        [switch]$Force = [switch]::NotPresent
     )
     #endregion
 
@@ -31,11 +31,13 @@
     #region Process
     process {
         if ($Force.IsPresent -or (-not (Get-PackageProvider -Name $ProviderName -ErrorAction Ignore))) {
+            $providerVersionMap = $PSCmdlet.MyInvocation.MyCommand.Module.PrivateData.Configuration.PackageProviderVersionMap
+
             if ($ProviderName -eq 'PowerShellGet') {
-                Install-Module 'PowerShellGet' -AllowClobber -Force:$Force -ErrorAction $ErrorAction
+                Install-Module 'PowerShellGet' -MinimumVersion $providerVersionMap[$ProviderName] -AllowClobber -Force:$Force -ErrorAction $ErrorAction
             }
 
-            Install-PackageProvider -Name $ProviderName -Force:$Force -ErrorAction $ErrorAction
+            Install-PackageProvider -Name $ProviderName -MinimumVersion $providerVersionMap[$ProviderName] -Force:$Force -ErrorAction $ErrorAction
         }
     }
     #endregion
