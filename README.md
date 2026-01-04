@@ -49,12 +49,30 @@ You can also load single function which is useful for debugging:
 Import-Module '.\modules\Gucu112.Powershell.Utility\src\Test-WindowsIdentity.psm1'
 ```
 
+#### Install module
+
+Simply run following command to install module:
+
+```powershell
+Install-Module 'Gucu112.Powershell.Utility'
+```
+
+Then it is possible to import it by name:
+
+```powershell
+Import-Module 'Gucu112.Powershell.Utility'
+```
+
+#### Remove module
+
 Remember to remove module/function if you want to reload it:
 
 ```powershell
 Remove-Module 'Gucu112.Powershell.Utility' # module name (psd1)
 Remove-Module 'Test-WindowsIdentity' # function name (psm1)
 ```
+
+## Next steps
 
 ### Developing
 
@@ -64,19 +82,19 @@ Start from root project directory and use this command:
 Import-Module '.\modules\Gucu112.Powershell.PackageManagement\Gucu112.Powershell.PackageManagement.psd1'
 ```
 
-## Create new module
+#### Create new module
 
 Run following command from root project directory:
 
-```shell
+```powershell
 New-ModuleScaffold -Path '.\modules\Gucu112.Powershell.MyModule'
 ```
 
-## Create new functions in the module
+#### Create new functions in the module
 
 Run following command from root project directory:
 
-```shell
+```powershell
 New-ModuleFunction -Name @('New-Thing', 'Get-Thing', 'Test-Thing') -Path '.\modules\Gucu112.Powershell.MyModule'
 ```
 
@@ -84,7 +102,7 @@ New-ModuleFunction -Name @('New-Thing', 'Get-Thing', 'Test-Thing') -Path '.\modu
 
 You can run single module tests using respective `RunTestsLocally.ps1` script:
 
-```shell
+```powershell
 Install-Module Pester
 Invoke-Expression -Command "& .\modules\Gucu112.Powershell.Utility\tools\RunTestsLocally.ps1"
 ```
@@ -93,16 +111,16 @@ Remember to update script path in the command above to target selected module.
 
 Optionally, you can also run static analysis of the module using this command:
 
-```shell
+```powershell
 Install-Module PSScriptAnalyzer
 Invoke-ScriptAnalyzer -Path ".\modules\Gucu112.Powershell.Utility" -Recurse
 ```
 
-## Deployment
+### Deployment
 
 Only after successful run and test it is reasonable to publish module:
 
-```shell
+```powershell
 Publish-Module -Path ".\modules\Gucu112.Powershell.Utility" -NuGetApiKey "$env:NUGET_API_KEY"
 ```
 
