@@ -82,11 +82,27 @@ New-ModuleFunction -Name @('New-Thing', 'Get-Thing', 'Test-Thing') -Path '.\modu
 
 ### Testing
 
-Some tests are implemented. Documentation in progress...
+You can run single module tests using respective `RunTestsLocally.ps1` script:
+
+```shell
+Invoke-Expression -Command "& .\modules\Gucu112.Powershell.Utility\tools\RunTestsLocally.ps1"
+```
+
+Remember to update script path in the command above to target selected module.
+
+Optionally, you can also run static analysis of the module using this command:
+
+```shell
+TODO
+```
 
 ## Deployment
 
-There are no deployment procedure established yet.
+Only after successful run and test it is reasonable to publish module:
+
+```shell
+TODO
+```
 
 ## Contributing
 
