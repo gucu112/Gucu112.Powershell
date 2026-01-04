@@ -12,7 +12,7 @@ if (-not (Test-WindowsIdentity -Administrator)) {
     exit
 }
 
-if ((Get-ComputerInfo).CsDnsHostName -ne $ComputerName) {
+if ((Get-LocalDomain) -ne $ComputerName) {
     Rename-Computer -NewName $ComputerName
     Write-Information "Computer will be restarted in 5 seconds..."
     Start-Sleep -Seconds 5

@@ -1,5 +1,7 @@
 param(
-    [string]$UserName = "PC"
+    [string]$UserName = "User",
+    [string]$FullName = [string]::Empty,
+    [string]$Description = [string]::Empty
 )
 
 $modulePath = '..\..\modules\Gucu112.Powershell.Utility\tools\InstallModule.ps1'
@@ -12,10 +14,7 @@ if (-not (Test-WindowsIdentity -Administrator)) {
     exit
 }
 
-$firstLocalUser = Get-LocalUser | Where-Object Enabled | Select-Object -First 1
-$firstLocalUser | Rename-LocalUser -NewName $UserName
-
-# TODO: Try to rename user folder as well
-# https://www.elevenforum.com/t/change-name-of-user-profile-folder-in-windows-11.2133/
-
-# Restart-Computer
+# TODO: Check if password does not need to be set
+New-LocalUser -Name $UserName -FullName $FullName -Description $Description `
+    -NoPassword -AccountNeverExpires
+Add-LocalGroupMember -Group "Users" -Member $UserName
