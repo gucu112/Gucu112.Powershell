@@ -73,6 +73,7 @@ RequiredAssemblies = @(
 # Modules to import as nested modules of the module specified in RootModule/ModuleToProcess
 NestedModules = @(
     'src\Add-ItemProperty.psm1'
+    'src\Get-LocalDomain.psm1'
     'src\Get-WindowsIdentity.psm1'
     'src\Get-WindowsUser.psm1'
     'src\Stop-WindowsUser.psm1'
@@ -84,6 +85,7 @@ NestedModules = @(
 FunctionsToExport = @(
     # Gucu112.Powershell.Utility
     'Add-ItemProperty'
+    'Get-LocalDomain'
     'Get-WindowsIdentity'
     'Get-WindowsUser'
     'Stop-WindowsUser'

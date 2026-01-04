@@ -18,7 +18,7 @@ function Get-WindowsUser {
 
         [Parameter(ParameterSetName = 'LocalUser')]
         [Alias('LocalUser')]
-        [switch]$Local = [switch]::IsPresent
+        [switch]$Local = [switch]::Present
     )
     #endregion
 
