@@ -1,4 +1,8 @@
 function Test-ItemProperty {
+    <#
+    .DESCRIPTION
+    No description yet.
+    #>
     [CmdletBinding()]
     [OutputType([bool])]
     param (

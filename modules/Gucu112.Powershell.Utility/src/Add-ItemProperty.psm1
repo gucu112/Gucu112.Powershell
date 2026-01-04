@@ -1,4 +1,8 @@
 function Add-ItemProperty {
+    <#
+    .DESCRIPTION
+    No description yet.
+    #>
     [CmdletBinding()]
     param (
         [Parameter(Mandatory)]
@@ -42,5 +46,3 @@ function Add-ItemProperty {
             -PropertyType $PropertyType | Out-Null
     }
 }
-
-Export-ModuleMember -Function Add-ItemProperty

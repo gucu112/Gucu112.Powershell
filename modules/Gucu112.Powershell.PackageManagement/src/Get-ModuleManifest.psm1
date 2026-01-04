@@ -5,7 +5,8 @@ using namespace System.Management.Automation
 function Get-ModuleManifest {
     #region Documentation
     <#
-    No documentation yet.
+    .DESCRIPTION
+    No description yet.
     #>
     #endregion
 
@@ -59,5 +60,3 @@ function Get-ModuleManifest {
     }
     #endregion
 }
-
-

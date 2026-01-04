@@ -1,7 +1,8 @@
 function Add-PackageSource {
     #region Documentation
     <#
-    No documentation yet.
+    .DESCRIPTION
+    No description yet.
     #>
     #endregion
 

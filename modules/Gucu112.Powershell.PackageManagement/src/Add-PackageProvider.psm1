@@ -1,7 +1,8 @@
 function Add-PackageProvider {
     #region Documentation
     <#
-    No documentation yet.
+    .DESCRIPTION
+    No description yet.
     #>
     #endregion
 

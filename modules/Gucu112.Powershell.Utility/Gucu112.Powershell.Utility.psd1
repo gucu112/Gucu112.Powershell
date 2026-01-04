@@ -12,7 +12,7 @@
 RootModule = 'Gucu112.Powershell.Utility.psm1'
 
 # Version number of this module.
-ModuleVersion = '0.1.2512.200'
+ModuleVersion = '0.1.2601.030'
 
 # Supported PSEditions
 # CompatiblePSEditions = @()
@@ -73,6 +73,7 @@ RequiredAssemblies = @(
 # Modules to import as nested modules of the module specified in RootModule/ModuleToProcess
 NestedModules = @(
     'src\Add-ItemProperty.psm1'
+    'src\Get-LocalDomain.psm1'
     'src\Get-WindowsIdentity.psm1'
     'src\Get-WindowsUser.psm1'
     'src\Stop-WindowsUser.psm1'
@@ -84,6 +85,7 @@ NestedModules = @(
 FunctionsToExport = @(
     # Gucu112.Powershell.Utility
     'Add-ItemProperty'
+    'Get-LocalDomain'
     'Get-WindowsIdentity'
     'Get-WindowsUser'
     'Stop-WindowsUser'
@@ -125,13 +127,13 @@ PrivateData = @{
     PSData = @{
 
         # Tags applied to this module. These help with module discovery in online galleries.
-        # Tags = @()
+        Tags = @()
 
         # A URL to the license for this module.
-        # LicenseUri = ''
+        LicenseUri = 'https://github.com/gucu112/Gucu112.Powershell/blob/master/LICENSE.txt'
 
         # A URL to the main website for this project.
-        # ProjectUri = ''
+        ProjectUri = 'https://github.com/gucu112/Gucu112.Powershell/tree/master/modules/Gucu112.Powershell.Utility'
 
         # A URL to an icon representing this module.
         # IconUri = ''

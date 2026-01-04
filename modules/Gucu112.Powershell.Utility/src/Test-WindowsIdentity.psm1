@@ -3,7 +3,8 @@
 function Test-WindowsIdentity {
     #region Documentation
     <#
-    No documentation yet.
+    .DESCRIPTION
+    No description yet.
     See: https://docs.microsoft.com/en-us/dotnet/api/system.security.principal.windowsbuiltinrole?view=netframework-4.8
     See: https://docs.microsoft.com/en-us/dotnet/api/system.security.principal.windowsprincipal.isinrole?view=netframework-4.8
     #>
@@ -40,16 +41,12 @@ function Test-WindowsIdentity {
     #region Begin
     begin {
         if ($PSCmdlet.ShouldProcess('$Role', 'Set-WindowsRole')) {
-            switch ($PSCmdlet.ParameterSetName) {
-                'Administrator' {
-                    $Role = [WindowsBuiltInRole]::Administrator
-                }
-                'User' {
-                    $Role = [WindowsBuiltInRole]::User
-                }
-                'Guest' {
-                    $Role = [WindowsBuiltInRole]::Guest
-                }
+            if ($Administrator.IsPresent) {
+                $Role = [WindowsBuiltInRole]::Administrator
+            } elseif ($User.IsPresent) {
+                $Role = [WindowsBuiltInRole]::User
+            } elseif ($Guest.IsPresent) {
+                $Role = [WindowsBuiltInRole]::Guest
             }
         }
 
@@ -60,5 +57,3 @@ function Test-WindowsIdentity {
     }
     #endregion
 }
-
-
