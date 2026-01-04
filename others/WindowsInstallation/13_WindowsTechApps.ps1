@@ -16,9 +16,9 @@ Install-WinGetPackage -Id 'Kubernetes.minikube' -MatchOption Equals -Source wing
 #Requires -RunAsAdministrator
 dockerd --register-service
 [System.Environment]::SetEnvironmentVariable(
-    "DOCKER_HOST", "tcp://[::1]:2375", "User"
+    "DOCKER_HOST", "tcp://localhost:2375", "User"
 )
-# minikube start --driver=docker
+minikube start --driver=docker --subnet=$(wsl hostname -I | wsl cut -d ' ' -f 1)
 
 # Install Git for Windows
 $gitOptionsPath = (Resolve-Path "~\OneDrive\Settings\Git\git_options.ini").Path

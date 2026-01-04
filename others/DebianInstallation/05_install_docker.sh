@@ -31,5 +31,5 @@ sudo systemctl daemon-reload
 sudo systemctl restart docker.service
 
 # Expose ports for minikube
-# sudo ufw allow 32773:32777/tcp
-# sudo ufw reload
+sudo ufw allow 32768:32772/tcp
+sudo ufw reload
