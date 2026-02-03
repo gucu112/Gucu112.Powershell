@@ -26,3 +26,15 @@ Add-ItemProperty -Path $HKCU_Explorer_Advanced -Name 'ShowTaskViewButton' -Prope
 
 # Clipboard history settings
 # TODO: Turn on clipboard history (Win+V)
+
+# Policy explorer settings
+$HKLM_Policies_Explorer = 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\Explorer'
+
+# Disable all apps in start menu
+Add-ItemProperty -Path $HKLM_Policies_Explorer -Name 'NoStartMenuMorePrograms' -PropertyType DWord -Value 1
+
+# Phone link sidebar settings
+$HKCU_YourPhone = 'HKCU:\Software\Microsoft\Windows\CurrentVersion\Start\Companions\Microsoft.YourPhone_8wekyb3d8bbwe'
+
+# Disable phone link sidebar
+Add-ItemProperty -Path $HKCU_YourPhone -Name 'IsEnabled' -PropertyType DWord -Value 0
